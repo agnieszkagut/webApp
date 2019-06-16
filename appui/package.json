@@ -1,0 +1,53 @@
+{
+  "name": "appui",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^4.2.1",
+    "bootswatch": "^3.3.7",
+    "file-api": "^0.10.4",
+    "i18next": "^13.1.1",
+    "material-ui": "^0.20.2",
+    "moment": "^2.23.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-bootstrap": "^0.32.4",
+    "react-datepicker": "^2.0.0",
+    "react-device-breakpoints": "^2.0.3",
+    "react-dom": "^16.5.2",
+    "react-events-calendar": "^1.0.0-beta.3",
+    "react-fetch-loading": "^0.1.11",
+    "react-files": "^2.4.8",
+    "react-i18next": "^9.0.2",
+    "react-moment": "^0.8.4",
+    "react-number-format": "^4.0.6",
+    "react-numeric-input": "^2.2.3",
+    "react-responsive": "^7.0.0",
+    "react-responsive-navbar": "^1.0.11",
+    "react-responsive-ui": "^0.14.140",
+    "react-scripts": "2.1.3",
+    "react-sentinel": "^0.2.0",
+    "react-socks": "^1.0.1",
+    "reactstrap": "^7.0.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "webpack-defaults": "webpack-defaults"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "react-media": "^1.9.2"
+  }
+}

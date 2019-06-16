@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.ag.studies.models.ConfigTableEntity">
+        <table name="config_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="configId">
+                <column name="config_id" precision="11"/>
+            </id>
+            <basic name="userId">
+                <column name="user_id" precision="11"/>
+            </basic>
+            <basic name="projectId">
+                <column name="project_id" precision="11"/>
+            </basic>
+            <basic name="accessLevel">
+                <column name="access_level" precision="11"/>
+            </basic>
+            <many-to-one name="userTableByUserId" optional="true" target-entity="com.ag.studies.models.UserTableEntity">
+                <join-column name="user_id" referenced-column-name="user_id"/>
+            </many-to-one>
+            <many-to-one name="projectTableByProjectId" optional="true"
+                         target-entity="com.ag.studies.models.ProjectTableEntity">
+                <join-column name="project_id" referenced-column-name="project_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.GroupTableEntity">
+        <table name="group_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="groupId">
+                <column name="group_id" precision="11"/>
+            </id>
+            <basic name="name">
+                <column name="name" length="50"/>
+            </basic>
+            <basic name="createDate">
+                <column name="create_date" precision="-1"/>
+            </basic>
+            <basic name="isActive">
+                <column name="is_active" precision="6"/>
+            </basic>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.IssueFileTableEntity">
+        <table name="issue_file_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="issueFileId">
+                <column name="issue_file_id" precision="11"/>
+            </id>
+            <basic name="issueId">
+                <column name="issue_id" precision="11"/>
+            </basic>
+            <basic name="title">
+                <column name="title" length="250"/>
+            </basic>
+            <basic name="description">
+                <column name="description" length="250"/>
+            </basic>
+            <basic name="filetype">
+                <column name="filetype" nullable="false" length="250"/>
+            </basic>
+            <basic name="dateAdded">
+                <column name="date_added" precision="-1"/>
+            </basic>
+            <many-to-one name="issueTableByIssueId" optional="true"
+                         target-entity="com.ag.studies.models.IssueTableEntity">
+                <join-column name="issue_id" referenced-column-name="issue_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.IssueHistoryTableEntity">
+        <table name="issue_history_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="issueHistoryId">
+                <column name="issue_history_id" precision="11"/>
+            </id>
+            <basic name="issueId">
+                <column name="issue_id" precision="11"/>
+            </basic>
+            <basic name="userId">
+                <column name="user_id" precision="11"/>
+            </basic>
+            <basic name="oldValue">
+                <column name="old_value"/>
+            </basic>
+            <basic name="newValue">
+                <column name="new_value"/>
+            </basic>
+            <basic name="dateModified">
+                <column name="data_modified" precision="-1"/>
+            </basic>
+            <many-to-one name="issueTableByIssueId" optional="true"
+                         target-entity="com.ag.studies.models.IssueTableEntity">
+                <join-column name="issue_id" referenced-column-name="issue_id"/>
+            </many-to-one>
+            <many-to-one name="userTableByUserId" optional="true" target-entity="com.ag.studies.models.UserTableEntity">
+                <join-column name="user_id" referenced-column-name="user_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.IssueTableEntity">
+        <table name="issue_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="issueId">
+                <column name="issue_id" precision="11"/>
+            </id>
+            <basic name="projectId">
+                <column name="project_id" precision="11"/>
+            </basic>
+            <basic name="userId">
+                <column name="user_id" precision="11"/>
+            </basic>
+            <basic name="status">
+                <column name="status" length="32"/>
+            </basic>
+            <basic name="dateSubmitted">
+                <column name="date_submitted" precision="-1"/>
+            </basic>
+            <basic name="lastUpdated">
+                <column name="last_updated" precision="-1"/>
+            </basic>
+            <many-to-one name="projectTableByProjectId" optional="true"
+                         target-entity="com.ag.studies.models.ProjectTableEntity">
+                <join-column name="project_id" referenced-column-name="project_id"/>
+            </many-to-one>
+            <many-to-one name="userTableByUserId" optional="true" target-entity="com.ag.studies.models.UserTableEntity">
+                <join-column name="user_id" referenced-column-name="user_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.MessageRecipientTableEntity">
+        <table name="message_recipient_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="messageRecipientId">
+                <column name="message_recipient_id" precision="11"/>
+            </id>
+            <basic name="recipientId">
+                <column name="recipient_id" precision="11"/>
+            </basic>
+            <basic name="userGroupId">
+                <column name="user_group_id" nullable="false" precision="11"/>
+            </basic>
+            <basic name="messageId">
+                <column name="message_id" precision="11"/>
+            </basic>
+            <many-to-one name="userTableByRecipientId" optional="true"
+                         target-entity="com.ag.studies.models.UserTableEntity">
+                <join-column name="recipient_id" referenced-column-name="user_id"/>
+            </many-to-one>
+            <many-to-one name="userGroupTableByUserGroupId" optional="true"
+                         target-entity="com.ag.studies.models.UserGroupTableEntity">
+                <join-column name="user_group_id" nullable="false" referenced-column-name="user_group_id"/>
+            </many-to-one>
+            <many-to-one name="messageTableByMessageId" optional="true"
+                         target-entity="com.ag.studies.models.MessageTableEntity">
+                <join-column name="message_id" referenced-column-name="message_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.MessageTableEntity">
+        <table name="message_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="messageId">
+                <column name="message_id" precision="11"/>
+            </id>
+            <basic name="creatorId">
+                <column name="creator_id" precision="11"/>
+            </basic>
+            <basic name="parentMessageId">
+                <column name="parent_message_id" nullable="false" precision="11"/>
+            </basic>
+            <basic name="subject">
+                <column name="subject" length="200"/>
+            </basic>
+            <basic name="messageBody">
+                <column name="message_body"/>
+            </basic>
+            <basic name="isRead">
+                <column name="is_read" precision="6"/>
+            </basic>
+            <basic name="createDate">
+                <column name="create_date" precision="-1"/>
+            </basic>
+            <many-to-one name="userTableByCreatorId" optional="true"
+                         target-entity="com.ag.studies.models.UserTableEntity">
+                <join-column name="creator_id" referenced-column-name="user_id"/>
+            </many-to-one>
+            <many-to-one name="messageTableByParentMessageId" optional="true"
+                         target-entity="com.ag.studies.models.MessageTableEntity">
+                <join-column name="parent_message_id" nullable="false" referenced-column-name="message_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.ProjectFileTableEntity">
+        <table name="project_file_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="projectFileId">
+                <column name="project_file_id" precision="11"/>
+            </id>
+            <basic name="projectId">
+                <column name="project_id" precision="11"/>
+            </basic>
+            <basic name="title">
+                <column name="title" length="250"/>
+            </basic>
+            <basic name="description">
+                <column name="description" length="250"/>
+            </basic>
+            <basic name="filetype">
+                <column name="filetype" nullable="false" length="250"/>
+            </basic>
+            <basic name="dateAdded">
+                <column name="date_added" precision="-1"/>
+            </basic>
+            <many-to-one name="projectTableByProjectId" optional="true"
+                         target-entity="com.ag.studies.models.ProjectTableEntity">
+                <join-column name="project_id" referenced-column-name="project_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.ProjectTableEntity">
+        <table name="project_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="projectId">
+                <column name="project_id" precision="11"/>
+            </id>
+            <basic name="name">
+                <column name="name" length="128"/>
+            </basic>
+            <basic name="status">
+                <column name="status" length="32"/>
+            </basic>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <basic name="sponsorship">
+                <column name="sponsorship" precision="2"/>
+            </basic>
+            <basic name="startDate">
+                <column name="start_date" precision="-1"/>
+            </basic>
+            <basic name="endDate">
+                <column name="end_date" precision="-1"/>
+            </basic>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.SponsorshipTableEntity">
+        <table name="sponsorship_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="sponsorshipId">
+                <column name="sponsorship_id" precision="11"/>
+            </id>
+            <basic name="projectId">
+                <column name="project_id" precision="11"/>
+            </basic>
+            <basic name="name">
+                <column name="name" length="200"/>
+            </basic>
+            <basic name="value">
+                <column name="value" precision="2"/>
+            </basic>
+            <many-to-one name="projectTableByProjectId" optional="true"
+                         target-entity="com.ag.studies.models.ProjectTableEntity">
+                <join-column name="project_id" referenced-column-name="project_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.UserGroupTableEntity">
+        <table name="user_group_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="userGroupId">
+                <column name="user_group_id" precision="11"/>
+            </id>
+            <basic name="userId">
+                <column name="user_id" precision="11"/>
+            </basic>
+            <basic name="groupId">
+                <column name="group_id" precision="11"/>
+            </basic>
+            <basic name="createDate">
+                <column name="create_date" precision="-1"/>
+            </basic>
+            <basic name="isActive">
+                <column name="is_active" precision="6"/>
+            </basic>
+            <many-to-one name="userTableByUserId" optional="true" target-entity="com.ag.studies.models.UserTableEntity">
+                <join-column name="user_id" referenced-column-name="user_id"/>
+            </many-to-one>
+            <many-to-one name="groupTableByGroupId" optional="true"
+                         target-entity="com.ag.studies.models.GroupTableEntity">
+                <join-column name="group_id" referenced-column-name="group_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.UserTableEntity">
+        <table name="user_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="userId">
+                <column name="user_id" precision="11"/>
+            </id>
+            <basic name="username">
+                <column name="username" length="191"/>
+            </basic>
+            <basic name="realname">
+                <column name="realname" length="191"/>
+            </basic>
+            <basic name="email">
+                <column name="email" length="191"/>
+            </basic>
+            <basic name="password">
+                <column name="password" length="64"/>
+            </basic>
+            <basic name="lastVisit">
+                <column name="last_visit" precision="-1"/>
+            </basic>
+            <basic name="dateCreated">
+                <column name="date_created" precision="-1"/>
+            </basic>
+            <basic name="lostPasswordRequestCount">
+                <column name="lost_password_request_count" nullable="false" precision="11"/>
+            </basic>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.RolesTableEntity">
+        <table name="roles_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="role_id">
+                <column name="role_id" precision="11"/>
+            </id>
+            <basic name="username">
+                <column name="username" length="191"/>
+            </basic>
+            <basic name="role">
+                <column name="role" length="191"/>
+            </basic>
+            <one-to-one name="userTableByUsername" optional="true" target-entity="com.ag.studies.models.UserTableEntity">
+                <join-column name="username" referenced-column-name="username"/>
+            </one-to-one>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.CalendarEntriesTableEntity">
+        <table name="calendar_entries_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="calendarEntryId">
+                <column name="calendar_entry_id" precision="11"/>
+            </id>
+            <basic name="projectId">
+                <column name="project_id" precision="11"/>
+            </basic>
+            <basic name="date">
+                <column name="date" precision="-1"/>
+            </basic>
+            <basic name="description">
+                <column name="description" length="250"/>
+            </basic>
+        </attributes>
+    </entity>
+    <entity class="com.ag.studies.models.TasksTableEntity">
+        <table name="tasks_table" schema="projekty" catalog=""/>
+        <attributes>
+            <id name="taskId">
+                <column name="task_id" precision="11"/>
+            </id>
+            <basic name="projectId">
+                <column name="project_id" precision="11"/>
+            </basic>
+            <basic name="deadline">
+                <column name="deadline" precision="-1"/>
+            </basic>
+            <basic name="isDone">
+                <column name="is_done" precision="1"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

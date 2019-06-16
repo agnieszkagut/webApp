@@ -1,0 +1,112 @@
+{
+	"buttons": {
+		"cancel": "Anuluj",
+		"conversation": {
+			"hide": "Ukryj Rozmowę",
+			"show": "Pokaż Całą Rozmowę"
+		},
+		"details": {
+			"hide": "Ukryj Szczegóły",
+			"show": "Pokaż Szczegóły"
+		},
+		"edit": "Edytuj",
+		"end": "ZAKOŃCZ",
+		"logOut": "Wyloguj",
+		"message": {
+			"hide": "Ukryj Wiadomość",
+			"show": "Pokaż Wiadomość"
+		},
+		"reply": "Odpowiedz",
+		"send": "Wyślij",
+		"stop": "PRZERWIJ",
+		"submit": "Zatwierdź",
+		"webservice": {
+			"hide": "Ukryj Usługę Sieciową",
+			"show": "Pokaż Usługę Sieciową"
+		}
+	},
+	"calendar": {
+		"existing": "Istniejąca Notatka:",
+		"new": "Dodaj Notatkę:",
+		"none": "Brak wydarzeń"
+	},
+	"compnames": {
+		"add": "Dodaj Nową Kwestię",
+		"calendar": "Kalendarz",
+		"main": "Strona Główna",
+		"messages": "Wiadomości",
+		"newUser": "Dodaj użytkownika",
+		"projects": "Projekty",
+		"reported": "Zgłoszone Kwestie"
+	},
+	"issue": {
+		"addInscription": "Dodaj opis",
+		"status": "Status: ",
+		"subject": "Temat: "
+	},
+	"logged": "Zalogowany:",
+	"login": "Zaloguj",
+	"messages": {
+		"conversation": "Cała Konwersacja:",
+		"deleteConversation": "Usuń Całą Rozmowę",
+		"message": "Wiadomość:",
+		"new": "Nowa Wiadomość:",
+		"received": "Otrzymane Wiadomości",
+		"reply": "Dodaj Odpowiedź",
+		"sent": "Wysłane Wiadomości",
+		"subject": "Temat: "
+	},
+	"project": {
+		"add": "Dodaj nowy projekt",
+		"addFromFile": "Importuj projekt z pliku JSON",
+		"delayed": "Opóźnione: ",
+		"employees": "Zatrudnionych osób: ",
+		"endDate": "Data zakończenia: ",
+		"jsonFile": "Wzór pliku (po dwukropku należy wpisać dane wskazanego typu):",
+		"message": "Wyślij Wiadomość",
+		"name": "Nazwa projektu:",
+		"new": "Dodaj nowy projekt",
+		"programStatus": "Status programu: ",
+		"projectLeader": "Kierownik projektu: ",
+		"sponsorship": "Fundusze: ",
+		"startDate": "Data rozpoczęcia: ",
+		"tasksDone": "Zrealizowanych zadań: ",
+		"toAssign": "Fundusze do przydzielenia: ",
+		"unassigned": "Nieprzypisane: "
+	},
+	"projects": "Projekty",
+	"prompts": {
+		"addNewIssue": "Dodaj nową kwestię:",
+		"body": "Opisz swój problem: ",
+		"description": "Opis projektu: ",
+		"doublePassword": "Wprowadź hasło ponownie:",
+		"fundName": "Nazwa: ",
+		"inscription": "Wpisz opis problemu:",
+		"newProject": "Stwórz nowy projekt:",
+		"note": "Wpisz Notatkę: ",
+		"password": "Hasło:",
+		"position": "Stanowisko:",
+		"project": "Wybierz project",
+		"projectName": "Nazwa projektu:",
+		"realname": "Imię i Nazwisko:",
+		"recipient": "Wybierz Odbiorcę",
+		"registration": "Rejestracja:",
+		"reply": "Wpisz swoją Odpowiedź",
+		"subjectMessage": "TEMAT",
+		"taskName": "Nazwa Zadania: ",
+		"title": "Tytuł: ",
+		"user": "Wybierz Użytkownika: ",
+		"username": "Nazwa użytkownika:"
+	},
+	"theme": "Zmień motyw",
+	"warnings": {
+		"credentials": "Wprowadź poprawne dane",
+		"empty": "Nazwa użytkownika i hasło nie mogą być puste.",
+		"invalid": "Niepoprawne dane",
+		"null": "Żadne pole nie może pozostać puste.",
+		"ok": "Pomyślnie dodano użytkownika",
+		"passwords": "Podane hasła muszą być identycze!",
+		"wrong": "Niepoprawne dane."
+	},
+	"webservice": "Usługa Sieciowa - data i czas:"
+}

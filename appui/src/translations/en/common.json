@@ -1,0 +1,112 @@
+{
+	"buttons": {
+		"cancel": "Cancel",
+		"conversation": {
+			"hide": "Hide Full Conversation",
+			"show": "Show Full Conversation"
+		},
+		"details": {
+			"hide": "Hide Details",
+			"show": "Show Details"
+		},
+		"edit": "Edit",
+		"end": "close",
+		"logOut": "Log Out",
+		"message": {
+			"hide": "Hide Message",
+			"show": "Show Message"
+		},
+		"reply": "Reply",
+		"send": "Send",
+		"stop": "suspend",
+		"submit": "Submit",
+		"webservice": {
+			"hide": "Hide WebService",
+			"show": "Show Webservice"
+		}
+	},
+	"calendar": {
+		"existing": "Existing Notes:",
+		"new": "Add a Note:",
+		"none": "No events"
+	},
+	"compnames": {
+		"add": "Add New Issue",
+		"calendar": "Calendar",
+		"main": "Main",
+		"messages": "Messages",
+		"newUser": "Add user",
+		"projects": "Projects",
+		"reported": "Reported Issues"
+	},
+	"issue": {
+		"addInscription": "Add inscription",
+		"status": "Status: ",
+		"subject": "Subject: "
+	},
+	"logged": "User Logged:",
+	"login": "Log In",
+	"messages": {
+		"conversation": "Full Conversation:",
+		"deleteConversation": "Delete Whole Conversation",
+		"message": "Message:",
+		"new": "New Message:",
+		"received": "Received Messages",
+		"reply": "Add a Reply",
+		"sent": "Sent Messages",
+		"subject": "Subject: "
+	},
+	"project": {
+		"add": "Add new projekt",
+		"addFromFile": "Import project from JSON file",
+		"delayed": "Delayed: ",
+		"employees": "Employees: ",
+		"endDate": "End date: ",
+		"jsonFile": "File pattern (after the colon, enter the data of the indicated type):",
+		"message": "Send a Message",
+		"name": "Project name:",
+		"new": "Add new project",
+		"programStatus": "Program status: ",
+		"projectLeader": "Project Leader: ",
+		"sponsorship": "Sponsorship: ",
+		"startDate": "Start date: ",
+		"tasksDone": "Tasks done: ",
+		"toAssign": "Funds to assign: ",
+		"unassigned": "Not assigned: "
+	},
+	"projects": "Projects",
+	"prompts": {
+		"addNewIssue": "Add new issue:",
+		"body": "Describe your issue: ",
+		"description": "Project description:",
+		"doublePassword": "Re-enter the password:",
+		"fundName": "Sponsorship Name: ",
+		"inscription": "Write your inscription: ",
+		"newProject": "Add new Project:",
+		"note": "Write a Note: ",
+		"password": "Password:",
+		"position": "Position:",
+		"project": "Select project",
+		"projectName": "Project Name:",
+		"realname": "Name:",
+		"recipient": "Select Recipient",
+		"registration": "Registration:",
+		"reply": "Write your Reply",
+		"subjectMessage": "SUBJECT",
+		"taskName": "Task Name: ",
+		"title": "Title: ",
+		"user": "Select the User: ",
+		"username": "Username:"
+	},
+	"theme": "Change the theme",
+	"warnings": {
+		"credentials": "Enter valid credentials.",
+		"empty": "Username and password can't be empty.",
+		"invalid": "Invalid data",
+		"null": "You can't leave empty fields.",
+		"ok": "Success",
+		"passwords": "Passwords doesn't match!",
+		"wrong": "Invalid credentials."
+	},
+	"webservice": "Web Service - date & time: "
+}

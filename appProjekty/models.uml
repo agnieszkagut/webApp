@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ag.studies.models</OriginalElement>
+  <nodes>
+    <node x="1289.0" y="458.0">com.ag.studies.models.ConfigTableEntity</node>
+    <node x="1605.9615384615383" y="0.0">com.ag.studies.models.UserTableEntity</node>
+    <node x="651.9999999999999" y="446.5">com.ag.studies.models.TasksTableEntity</node>
+    <node x="336.0" y="469.0">com.ag.studies.models.CalendarEntriesTableEntity</node>
+    <node x="1932.0" y="425.0">com.ag.studies.models.MessageTableEntity</node>
+    <node x="1606.0" y="502.5">com.ag.studies.models.RolesTableEntity</node>
+    <node x="20.0" y="469.0">com.ag.studies.models.SponsorshipTableEntity</node>
+    <node x="972.9999999999999" y="425.0">com.ag.studies.models.IssueTableEntity</node>
+    <node x="1284.8666666666663" y="778.0">com.ag.studies.models.IssueHistoryTableEntity</node>
+    <node x="1882.6791666666663" y="800.0">com.ag.studies.models.MessageRecipientTableEntity</node>
+    <node x="688.8636363636363" y="33.0">com.ag.studies.models.ProjectTableEntity</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.ag.studies.models.UserTableEntity" target="com.ag.studies.models.UserTableEntity">
+      <point x="-108.46153846153845" y="147.5" />
+      <point x="1615.0" y="315.0" />
+      <point x="1585.9615384615383" y="315.0" />
+      <point x="1585.9615384615383" y="147.5" />
+      <point x="-117.5" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.SponsorshipTableEntity" target="com.ag.studies.models.SponsorshipTableEntity">
+      <point x="0.0" y="92.5" />
+      <point x="158.0" y="674.0" />
+      <point x="0.0" y="674.0" />
+      <point x="0.0" y="561.5" />
+      <point x="-138.0" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.CalendarEntriesTableEntity" target="com.ag.studies.models.CalendarEntriesTableEntity">
+      <point x="0.0" y="92.5" />
+      <point x="474.0" y="674.0" />
+      <point x="316.0" y="674.0" />
+      <point x="316.0" y="561.5" />
+      <point x="-138.0" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.TasksTableEntity" target="com.ag.studies.models.TasksTableEntity">
+      <point x="0.0" y="115.0" />
+      <point x="792.4999999999999" y="696.5" />
+      <point x="631.9999999999999" y="696.5" />
+      <point x="631.9999999999999" y="561.5" />
+      <point x="-140.5" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.ProjectTableEntity" target="com.ag.studies.models.ProjectTableEntity">
+      <point x="-86.36363636363637" y="114.5" />
+      <point x="697.4999999999999" y="282.0" />
+      <point x="668.8636363636363" y="282.0" />
+      <point x="668.8636363636363" y="147.5" />
+      <point x="-95.0" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.ConfigTableEntity" target="com.ag.studies.models.UserTableEntity">
+      <point x="103.5" y="-103.5" />
+      <point x="1530.5" y="385.0" />
+      <point x="1687.3076923076922" y="385.0" />
+      <point x="-36.15384615384619" y="147.5" />
+    </edge>
+    <edge source="com.ag.studies.models.IssueTableEntity" target="com.ag.studies.models.IssueTableEntity">
+      <point x="-92.0" y="136.5" />
+      <point x="1018.9999999999999" y="718.0" />
+      <point x="952.9999999999999" y="718.0" />
+      <point x="952.9999999999999" y="561.5" />
+      <point x="-138.0" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.CalendarEntriesTableEntity" target="com.ag.studies.models.ProjectTableEntity">
+      <point x="69.0" y="-92.5" />
+      <point x="543.0" y="395.0" />
+      <point x="766.590909090909" y="395.0" />
+      <point x="-17.272727272727252" y="114.5" />
+    </edge>
+    <edge source="com.ag.studies.models.MessageRecipientTableEntity" target="com.ag.studies.models.UserTableEntity">
+      <point x="-113.625" y="-103.5" />
+      <point x="1920.5541666666663" y="758.0" />
+      <point x="1880.5" y="758.0" />
+      <point x="1880.5" y="385.0" />
+      <point x="1777.6923076923076" y="385.0" />
+      <point x="54.23076923076917" y="147.5" />
+    </edge>
+    <edge source="com.ag.studies.models.IssueHistoryTableEntity" target="com.ag.studies.models.IssueTableEntity">
+      <point x="-91.125" y="-125.5" />
+      <point x="1315.2416666666663" y="758.0" />
+      <point x="1111.0" y="758.0" />
+      <point x="0.0" y="136.5" />
+    </edge>
+    <edge source="com.ag.studies.models.IssueTableEntity" target="com.ag.studies.models.UserTableEntity">
+      <point x="34.5" y="-136.5" />
+      <point x="1145.5" y="355.0" />
+      <point x="1633.0769230769229" y="355.0" />
+      <point x="-90.38461538461536" y="147.5" />
+    </edge>
+    <edge source="com.ag.studies.models.MessageTableEntity" target="com.ag.studies.models.UserTableEntity">
+      <point x="-84.25" y="-136.5" />
+      <point x="2016.25" y="365.0" />
+      <point x="1813.8461538461538" y="365.0" />
+      <point x="90.38461538461536" y="147.5" />
+    </edge>
+    <edge source="com.ag.studies.models.MessageRecipientTableEntity" target="com.ag.studies.models.MessageTableEntity">
+      <point x="113.625" y="-103.5" />
+      <point x="2147.8041666666663" y="758.0" />
+      <point x="2226.875" y="758.0" />
+      <point x="126.375" y="136.5" />
+    </edge>
+    <edge source="com.ag.studies.models.TasksTableEntity" target="com.ag.studies.models.ProjectTableEntity">
+      <point x="70.25" y="-115.0" />
+      <point x="862.7499999999999" y="405.0" />
+      <point x="801.1363636363635" y="405.0" />
+      <point x="17.272727272727252" y="114.5" />
+    </edge>
+    <edge source="com.ag.studies.models.ConfigTableEntity" target="com.ag.studies.models.ConfigTableEntity">
+      <point x="0.0" y="103.5" />
+      <point x="1427.0" y="685.0" />
+      <point x="1269.0" y="685.0" />
+      <point x="1269.0" y="561.5" />
+      <point x="-138.0" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.RolesTableEntity" target="com.ag.studies.models.UserTableEntity">
+      <point x="63.25" y="-59.0" />
+      <point x="1795.75" y="405.0" />
+      <point x="1741.5384615384614" y="405.0" />
+      <point x="18.076923076923094" y="147.5" />
+    </edge>
+    <edge source="com.ag.studies.models.IssueHistoryTableEntity" target="com.ag.studies.models.UserTableEntity">
+      <point x="30.375" y="-125.5" />
+      <point x="1436.7416666666663" y="748.0" />
+      <point x="1575.5" y="748.0" />
+      <point x="1575.5" y="395.0" />
+      <point x="1705.3846153846152" y="395.0" />
+      <point x="-18.076923076923094" y="147.5" />
+    </edge>
+    <edge source="com.ag.studies.models.RolesTableEntity" target="com.ag.studies.models.RolesTableEntity">
+      <point x="0.0" y="59.0" />
+      <point x="1732.5" y="640.5" />
+      <point x="1586.0" y="640.5" />
+      <point x="1586.0" y="561.5" />
+      <point x="-126.5" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.MessageRecipientTableEntity" target="com.ag.studies.models.MessageRecipientTableEntity">
+      <point x="0.0" y="103.5" />
+      <point x="2034.1791666666663" y="1027.0" />
+      <point x="1862.6791666666663" y="1027.0" />
+      <point x="1862.6791666666663" y="903.5" />
+      <point x="-151.5" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.ConfigTableEntity" target="com.ag.studies.models.ProjectTableEntity">
+      <point x="-34.5" y="-103.5" />
+      <point x="1392.5" y="335.0" />
+      <point x="870.2272727272727" y="335.0" />
+      <point x="86.36363636363649" y="114.5" />
+    </edge>
+    <edge source="com.ag.studies.models.SponsorshipTableEntity" target="com.ag.studies.models.ProjectTableEntity">
+      <point x="-69.0" y="-92.5" />
+      <point x="89.0" y="365.0" />
+      <point x="714.7727272727273" y="365.0" />
+      <point x="-69.09090909090901" y="114.5" />
+    </edge>
+    <edge source="com.ag.studies.models.IssueHistoryTableEntity" target="com.ag.studies.models.IssueHistoryTableEntity">
+      <point x="0.0" y="125.5" />
+      <point x="1406.3666666666663" y="1049.0" />
+      <point x="1264.8666666666663" y="1049.0" />
+      <point x="1264.8666666666663" y="903.5" />
+      <point x="-121.5" y="-0.0" />
+    </edge>
+    <edge source="com.ag.studies.models.IssueTableEntity" target="com.ag.studies.models.ProjectTableEntity">
+      <point x="-103.5" y="-136.5" />
+      <point x="1007.4999999999999" y="395.0" />
+      <point x="818.4090909090908" y="395.0" />
+      <point x="34.545454545454504" y="114.5" />
+    </edge>
+    <edge source="com.ag.studies.models.MessageTableEntity" target="com.ag.studies.models.MessageTableEntity">
+      <point x="-42.125" y="136.5" />
+      <point x="2058.375" y="728.0" />
+      <point x="1902.0" y="728.0" />
+      <point x="1902.0" y="493.25" />
+      <point x="-168.5" y="-68.25" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.4830741079597438" x="1328.2291666666667" y="541.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

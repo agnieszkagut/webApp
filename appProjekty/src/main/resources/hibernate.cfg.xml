@@ -26,50 +26,7 @@
             </many-to-one>
         </attributes>
     </entity>
-    <entity class="com.ag.studies.models.GroupTableEntity">
-        <table name="group_table" schema="projekty" catalog=""/>
-        <attributes>
-            <id name="groupId">
-                <column name="group_id" precision="11"/>
-            </id>
-            <basic name="name">
-                <column name="name" length="50"/>
-            </basic>
-            <basic name="createDate">
-                <column name="create_date" precision="-1"/>
-            </basic>
-            <basic name="isActive">
-                <column name="is_active" precision="6"/>
-            </basic>
-        </attributes>
-    </entity>
-    <entity class="com.ag.studies.models.IssueFileTableEntity">
-        <table name="issue_file_table" schema="projekty" catalog=""/>
-        <attributes>
-            <id name="issueFileId">
-                <column name="issue_file_id" precision="11"/>
-            </id>
-            <basic name="issueId">
-                <column name="issue_id" precision="11"/>
-            </basic>
-            <basic name="title">
-                <column name="title" length="250"/>
-            </basic>
-            <basic name="description">
-                <column name="description" length="250"/>
-            </basic>
-            <basic name="filetype">
-                <column name="filetype" nullable="false" length="250"/>
-            </basic>
-            <basic name="dateAdded">
-                <column name="date_added" precision="-1"/>
-            </basic>
-            <many-to-one name="issueTableByIssueId" optional="true"
-                         target-entity="com.ag.studies.models.IssueTableEntity">
-                <join-column name="issue_id" referenced-column-name="issue_id"/>
-            </many-to-one>
-        </attributes>
-    </entity>
+
     <entity class="com.ag.studies.models.IssueHistoryTableEntity">
         <table name="issue_history_table" schema="projekty" catalog=""/>
         <attributes>
@@ -149,10 +106,6 @@
                          target-entity="com.ag.studies.models.UserTableEntity">
                 <join-column name="recipient_id" referenced-column-name="user_id"/>
             </many-to-one>
-            <many-to-one name="userGroupTableByUserGroupId" optional="true"
-                         target-entity="com.ag.studies.models.UserGroupTableEntity">
-                <join-column name="user_group_id" nullable="false" referenced-column-name="user_group_id"/>
-            </many-to-one>
             <many-to-one name="messageTableByMessageId" optional="true"
                          target-entity="com.ag.studies.models.MessageTableEntity">
                 <join-column name="message_id" referenced-column-name="message_id"/>
@@ -193,33 +146,7 @@
             </many-to-one>
         </attributes>
     </entity>
-    <entity class="com.ag.studies.models.ProjectFileTableEntity">
-        <table name="project_file_table" schema="projekty" catalog=""/>
-        <attributes>
-            <id name="projectFileId">
-                <column name="project_file_id" precision="11"/>
-            </id>
-            <basic name="projectId">
-                <column name="project_id" precision="11"/>
-            </basic>
-            <basic name="title">
-                <column name="title" length="250"/>
-            </basic>
-            <basic name="description">
-                <column name="description" length="250"/>
-            </basic>
-            <basic name="filetype">
-                <column name="filetype" nullable="false" length="250"/>
-            </basic>
-            <basic name="dateAdded">
-                <column name="date_added" precision="-1"/>
-            </basic>
-            <many-to-one name="projectTableByProjectId" optional="true"
-                         target-entity="com.ag.studies.models.ProjectTableEntity">
-                <join-column name="project_id" referenced-column-name="project_id"/>
-            </many-to-one>
-        </attributes>
-    </entity>
+
     <entity class="com.ag.studies.models.ProjectTableEntity">
         <table name="project_table" schema="projekty" catalog=""/>
         <attributes>
@@ -264,33 +191,6 @@
             <many-to-one name="projectTableByProjectId" optional="true"
                          target-entity="com.ag.studies.models.ProjectTableEntity">
                 <join-column name="project_id" referenced-column-name="project_id"/>
-            </many-to-one>
-        </attributes>
-    </entity>
-    <entity class="com.ag.studies.models.UserGroupTableEntity">
-        <table name="user_group_table" schema="projekty" catalog=""/>
-        <attributes>
-            <id name="userGroupId">
-                <column name="user_group_id" precision="11"/>
-            </id>
-            <basic name="userId">
-                <column name="user_id" precision="11"/>
-            </basic>
-            <basic name="groupId">
-                <column name="group_id" precision="11"/>
-            </basic>
-            <basic name="createDate">
-                <column name="create_date" precision="-1"/>
-            </basic>
-            <basic name="isActive">
-                <column name="is_active" precision="6"/>
-            </basic>
-            <many-to-one name="userTableByUserId" optional="true" target-entity="com.ag.studies.models.UserTableEntity">
-                <join-column name="user_id" referenced-column-name="user_id"/>
-            </many-to-one>
-            <many-to-one name="groupTableByGroupId" optional="true"
-                         target-entity="com.ag.studies.models.GroupTableEntity">
-                <join-column name="group_id" referenced-column-name="group_id"/>
             </many-to-one>
         </attributes>
     </entity>

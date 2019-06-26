@@ -11,6 +11,7 @@ public class RolesTableEntity {
     private UserTableEntity userTableByUsername;
 
     @Id
+    @GeneratedValue
     public Long getRole_id() {
         return role_id;
     }

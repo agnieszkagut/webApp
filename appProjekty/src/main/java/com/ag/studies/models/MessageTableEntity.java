@@ -25,6 +25,7 @@ public class MessageTableEntity {
     private MessageTableEntity messageTableByParentMessageId;
 
     @Id
+    @GeneratedValue
     @Column(name = "message_id", nullable = false)
     public Long getMessageId() {
         return messageId;

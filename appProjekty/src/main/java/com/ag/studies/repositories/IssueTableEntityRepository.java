@@ -1,5 +1,6 @@
 package com.ag.studies.repositories;
 
+import com.ag.studies.models.IssueHistoryTableEntity;
 import com.ag.studies.models.IssueTableEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -21,4 +22,5 @@ public interface IssueTableEntityRepository extends JpaRepository<IssueTableEnti
     List<IssueTableEntity> findAllByOrderByLastUpdated();
 
     List<IssueTableEntity> findByStatusOrderByLastUpdated(String status);
+
 }

@@ -1,5 +1,6 @@
 package com.ag.studies.controllers;
 
+import com.ag.studies.EntityNotFoundException;
 import com.ag.studies.models.IssueHistoryTableEntity;
 import com.ag.studies.models.IssueTableEntity;
 import com.ag.studies.services.IssuesServiceImpl;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(allowCredentials="true")
 @RestController
 @RequestMapping("/issues")
@@ -20,21 +23,19 @@ public class IssuesController {
     @Autowired
     private IssuesServiceImpl issuesService;
 
-    @GetMapping("/lastThreeByStatus")
-    public List<IssueTableEntity> getLastThreeIssuesByStatus(@PathVariable(value = "status") String status){
-        return issuesService.findLastThreeByStatus(status);
+    @GetMapping
+    public List<IssuesServiceImpl.Issue> getAll(@RequestParam(value = "limit", required = false) Optional<Integer> limit){
+        if(limit.isPresent())   return issuesService.cutIssues(issuesService.findWithLimit(limit.get()));
+        else    return issuesService.cutIssues(issuesService.findAll());
     }
-    @GetMapping("/lastThree")
-    public List<IssueTableEntity> getLastThreeIssues(){
-        return issuesService.findLastThree();
-    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> addIssue(@RequestBody IncomingIssue newIssue){
+    public ResponseEntity<?> addIssue(@RequestBody IncomingIssue newIssue) throws EntityNotFoundException{
         issuesService.addIssue(newIssue.getUser(),
-                newIssue.getProject(),
+                newIssue.getProjectId(),
                 newIssue.getTitle(),
-                newIssue.getInscription()
+                 newIssue.getInscription()
         );
         return ResponseEntity.ok().body("Issue has been added.");
     }
@@ -43,7 +44,7 @@ public class IssuesController {
     @AllArgsConstructor
     static class IncomingIssue{
         private Long user;
-        private String project;
+        private Long projectId;
         private String title;
         private String inscription;
 
@@ -55,12 +56,12 @@ public class IssuesController {
             this.user = user;
         }
 
-        public String getProject() {
-            return project;
+        public Long getProjectId() {
+            return projectId;
         }
 
-        public void setProject(String project) {
-            this.project = project;
+        public void setProjectId(Long projectId) {
+            this.projectId = projectId;
         }
 
         public String getTitle() {
@@ -80,38 +81,24 @@ public class IssuesController {
         }
     }
 
-    @GetMapping("/{id}")
-    public List<IssueHistoryTableEntity> getById(@PathVariable(value = "id") Long id){
-        return issuesService.findByIssueId(id);
+    @GetMapping("/{issueId}")
+    public List<IssuesServiceImpl.IssueHistory> getById(@PathVariable(value = "issueId") Long id) throws EntityNotFoundException {
+        return issuesService.cutIssueHistory(issuesService.findByIssueId(id));
     }
-    @GetMapping("/all")
-    public List<IssueTableEntity> getAll(){
-        return issuesService.findAll();
-    }
-    @GetMapping("/issuesByProject/{project_id}")
-    public List<IssueTableEntity> getByProjectId(@PathVariable(value = "project_id") Long id){
-        return issuesService.findByProjectId(id);
+    @GetMapping("/project/{projectId}")
+    public List<IssuesServiceImpl.Issue> getByProjectId(@PathVariable(value = "projectId") Long id) throws EntityNotFoundException{
+        return issuesService.cutIssues(issuesService.findByProjectId(id));
     }
 
-    @GetMapping("/issuesByProject/{project_id}/{type}")
-    public List<IssueTableEntity> getByProjectIdByType(@PathVariable(value = "project_id") Long id, @PathVariable(value = "type") String type){
-        return issuesService.findByProjectIdAndByType(id, type);
-    }
-
-
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable(value = "id") Long id){
+    @DeleteMapping("/{issueId}")
+    public void deleteById(@PathVariable(value = "issueId") Long id) throws EntityNotFoundException{
         issuesService.delete(id);
     }
-    @DeleteMapping("/issuesByProject/{project_id}")
-    public void deleteByProjectId(@PathVariable(value = "project_id") Long id){
+    @DeleteMapping("/project/{projectId}")
+    public void deleteByProjectId(@PathVariable(value = "projectId") Long id)  throws EntityNotFoundException{
         issuesService.deleteByProjectId(id);
     }
-    @DeleteMapping("/issuesByProject/{project_id}/{type}")
-    public void deleteByProjectIdByType(@PathVariable(value = "project_id") Long id, @PathVariable(value = "type") String type){
-        issuesService.deleteByProjectIdAndByType(id, type);
-    }
-    @DeleteMapping("/all")
+    @DeleteMapping
     public void deleteAll(){
         issuesService.deleteAll();
     }
@@ -121,24 +108,22 @@ public class IssuesController {
     public long count(){
         return issuesService.count();
     }
-    @GetMapping("/issuesByProject/{project_id}/count")
-    public long countByProject(@PathVariable(value = "project_id") Long id){
-        return issuesService.countByProjectId(id);
-    }
-    @GetMapping("/issuesByProject/{project_id}/{type}/count")
-    public long countByProjectByType(@PathVariable(value = "project_id") Long id, @PathVariable(value = "type") String type){
-        return issuesService.countByProjectIdAndByType(id, type);
-    }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/modifyIssue/{issId}/{ussId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<?> addIssueModification(@PathVariable(value = "issId") Long issId, @PathVariable(value = "ussId") Long ussId, @RequestBody String newIssueModification){
-        issuesService.addIssueModification(issId, ussId, newIssueModification);
+    @PostMapping(path = "/{issueId}/replies", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<?> addIssueModification(@PathVariable(value = "issueId") Long issId, @RequestBody IncomingIssueReply newIssueModification)   throws EntityNotFoundException {
+        issuesService.addIssueModification(issId, newIssueModification.getUserId(), newIssueModification.getText());
         return ResponseEntity.ok().body("Modification has been added.");
     }
-
-    @PutMapping("/type/{id}")
-    public IssueTableEntity updateIssue(@PathVariable(value = "id") Long id, @RequestBody String new_type){
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class IncomingIssueReply {
+        private Long userId;
+        private String text;
+    }
+    @PutMapping("/{issueId}/type")
+    public IssueTableEntity updateIssue(@PathVariable(value = "issueId") Long id, @RequestBody String new_type){
         return issuesService.updateIssue(id, new_type);
     }
 }

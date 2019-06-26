@@ -1,5 +1,6 @@
 package com.ag.studies.services;
 
+import com.ag.studies.EntityNotFoundException;
 import com.ag.studies.models.CalendarEntriesTableEntity;
 
 import java.sql.Date;
@@ -13,7 +14,7 @@ public interface CalendarService {
 
     List<CalendarEntriesTableEntity> findByProjectId(Long projectId);
 
-    void addNewEntry(Long projectId, CalendarEntriesTableEntity newEntry);
+    void addNewEntry(Date selectedDate, Long projectId, String newInscription);
 
-    List<CalendarEntriesTableEntity> findByDate(String date);
+    List<CalendarEntriesTableEntity> findByDate(String date) throws EntityNotFoundException;
 }

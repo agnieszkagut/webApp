@@ -27,6 +27,7 @@ public class UserTableEntity {
     private Integer lostPasswordRequestCount;
 
     @Id
+    @GeneratedValue
     @Column(name = "user_id", nullable = false)
     public Long getUserId() {
         return userId;

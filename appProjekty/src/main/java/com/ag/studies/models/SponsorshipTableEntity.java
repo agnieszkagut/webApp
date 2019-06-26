@@ -16,6 +16,7 @@ public class SponsorshipTableEntity {
     private ProjectTableEntity projectTableByProjectId;
 
     @Id
+    @GeneratedValue
     @Column(name = "sponsorship_id", nullable = false)
     public Long getSponsorshipId() {
         return sponsorshipId;

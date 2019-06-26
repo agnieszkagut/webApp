@@ -6,8 +6,14 @@ import com.ag.studies.models.UserTableEntity;
 import com.ag.studies.repositories.MessageRecipientTableEntityRepository;
 import com.ag.studies.repositories.MessageTableEntityRepository;
 import com.ag.studies.repositories.UserTableEntityRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -39,8 +45,6 @@ public class MessagesServiceImpl implements MessagesService {
     @Override
     public void addReply(Long user, Long recipientId, Long parentMessageId, String subject, String message) {
         MessageTableEntity newMessage = new MessageTableEntity();
-        Long Id = (messagetableentityRepository.count()+1);
-        newMessage.setMessageId(Id);
         newMessage.setCreatorId(user);
         newMessage.setParentMessageId(parentMessageId);
         newMessage.setSubject(subject);
@@ -49,47 +53,55 @@ public class MessagesServiceImpl implements MessagesService {
         newMessage.setUserTableByCreatorId(usertableentityRepository.getOne(user));
         if(parentMessageId!=0)newMessage.setMessageTableByParentMessageId(messagetableentityRepository.getOne(parentMessageId));
         else newMessage.setMessageTableByParentMessageId(null);
-        messagetableentityRepository.save(newMessage);
-        MessageRecipientTableEntity newRecipient = new MessageRecipientTableEntity();
-        newRecipient.setMessageRecipientId(messagerecipienttableentityRepository.count()+1);
-        newRecipient.setRecipientId(recipientId);
-        newRecipient.setMessageId(newMessage.getMessageId());
-        newRecipient.setUserTableByRecipientId(usertableentityRepository.getOne(recipientId));
-        newRecipient.setMessageTableByMessageId(messagetableentityRepository.getOne(Id));
-        messagerecipienttableentityRepository.save(newRecipient);
+        try {
+            messagetableentityRepository.save(newMessage);
+        }catch(DataIntegrityViolationException ex){
+            addReply(user, recipientId, parentMessageId, subject, message);
+        }
     }
 
     @Override
-    public List<UserTableEntity> findlistOfUsers() {
-        return usertableentityRepository.findAll();
+    public void addReplyRecipient(Long messageId, Long recipientId){
+        MessageRecipientTableEntity newRecipient = new MessageRecipientTableEntity();
+        newRecipient.setRecipientId(recipientId);
+        newRecipient.setMessageId(messageId);
+        newRecipient.setUserTableByRecipientId(usertableentityRepository.getOne(recipientId));
+        newRecipient.setMessageTableByMessageId(messagetableentityRepository.getOne(messageId));
+        try {
+            messagerecipienttableentityRepository.save(newRecipient);
+        }catch (DataIntegrityViolationException ex){
+            addReplyRecipient(messageId, recipientId);
+        }
     }
 
     @Override
     public void addMessage(Long creatorId, String recipientEmail, String subject, String messageBody) {
         MessageTableEntity newMessage = new MessageTableEntity();
-        Long Id = (messagetableentityRepository.count()+1);
-        newMessage.setMessageId(Id);
         newMessage.setCreatorId(creatorId);
         newMessage.setSubject(subject);
         newMessage.setMessageBody(messageBody);
         newMessage.setIsRead((short) 0);
         newMessage.setUserTableByCreatorId(usertableentityRepository.getOne(creatorId));
-        messagetableentityRepository.save(newMessage);
-        MessageRecipientTableEntity newRecipient = new MessageRecipientTableEntity();
-        newRecipient.setMessageRecipientId(messagerecipienttableentityRepository.count()+1);
-        out.println(recipientEmail);
-        newRecipient.setRecipientId(usertableentityRepository.findByEmailEquals(recipientEmail).getUserId());
-        out.println(newRecipient.getRecipientId());
-        newRecipient.setMessageId(newMessage.getMessageId());
-        newRecipient.setUserTableByRecipientId(usertableentityRepository.findByEmailEquals(recipientEmail));
-        newRecipient.setMessageTableByMessageId(messagetableentityRepository.getOne(Id));
-        messagerecipienttableentityRepository.save(newRecipient);
+        try{
+            Long messageId = messagetableentityRepository.save(newMessage).getMessageId();
+            addMessageRecipient(recipientEmail, messageId);
+        }catch(DataIntegrityViolationException ex){
+            addMessage(creatorId, recipientEmail, subject, messageBody);
+        }
     }
 
     @Override
-    public void messageToLeader(Long creatorId, Long projectLeader, String subject, String newMessage) {
-        String email = usertableentityRepository.getOne(projectLeader).getEmail();
-        addMessage(creatorId, email, subject, newMessage);
+    public void addMessageRecipient(String recipientEmail, Long messageId){
+        MessageRecipientTableEntity newRecipient = new MessageRecipientTableEntity();
+        newRecipient.setRecipientId(usertableentityRepository.findByEmailEquals(recipientEmail).getUserId());
+        newRecipient.setMessageId(messageId);
+        newRecipient.setUserTableByRecipientId(usertableentityRepository.findByEmailEquals(recipientEmail));
+        newRecipient.setMessageTableByMessageId(messagetableentityRepository.getOne(messageId));
+        try{
+            messagerecipienttableentityRepository.save(newRecipient);
+        }catch(DataIntegrityViolationException ex){
+            addMessageRecipient(recipientEmail, messageId);
+        }
     }
 
     @Override
@@ -140,6 +152,29 @@ public class MessagesServiceImpl implements MessagesService {
     public long count(String subject) {
         return messagetableentityRepository.countBySubject(subject);
     }
+
+    @Override
+    public List<Message> cutMessages(List<MessageTableEntity> all){
+        List<Message> messageList = new ArrayList<>();
+        for(MessageTableEntity mes : all){
+            messageList.add(new Message(mes.getMessageId(), mes.getCreatorId(), mes.getParentMessageId(), mes.getSubject(), mes.getMessageBody(), mes.getCreateDate(), mes.getIsRead()));
+        }
+        return messageList;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Message{
+        private Long messageId;
+        private Long creatorId;
+        private Long parentMessageId;
+        private String subject;
+        private String messageBody;
+        private Timestamp createDate;
+        private Short isRead;
+    }
+
 }
 
 class SortByMessageId implements Comparator<MessageTableEntity> {

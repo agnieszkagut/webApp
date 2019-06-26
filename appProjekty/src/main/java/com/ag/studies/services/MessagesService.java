@@ -27,9 +27,11 @@ public interface MessagesService {
 
     void addReply(Long user, Long recipientId, Long parentMessageId, String subject, String message);
 
-    List<UserTableEntity> findlistOfUsers();
+    void addReplyRecipient(Long messageId, Long recipientId);
 
     void addMessage(Long creatorId, String recipientEmail, String subject, String messageBody);
 
-    void messageToLeader(Long creatorId, Long projectLeader, String subject, String newMessage);
+    void addMessageRecipient(String recipientEmail, Long messageId);
+
+    List<MessagesServiceImpl.Message> cutMessages(List<MessageTableEntity> all);
 }

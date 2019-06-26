@@ -16,6 +16,7 @@ public class TasksTableEntity {
     private ProjectTableEntity tasksTableByProjectId;
 
     @Id
+    @GeneratedValue
     @Column(name = "task_id", nullable = false)
     public Long getTaskId() {
         return taskId;

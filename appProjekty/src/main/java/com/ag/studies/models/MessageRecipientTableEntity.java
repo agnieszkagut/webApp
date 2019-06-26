@@ -14,6 +14,7 @@ public class MessageRecipientTableEntity {
     private MessageTableEntity messageTableByMessageId;
 
     @Id
+    @GeneratedValue
     @Column(name = "message_recipient_id", nullable = false)
     public Long getMessageRecipientId() {
         return messageRecipientId;

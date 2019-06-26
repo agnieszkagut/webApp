@@ -25,6 +25,7 @@ public class IssueTableEntity {
     private UserTableEntity userTableByUserId;
 
     @Id
+    @GeneratedValue
     @Column(name = "issue_id", nullable = false)
     public Long getIssueId() {
         return issueId;

@@ -1,5 +1,6 @@
 package com.ag.studies.models;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,6 +23,7 @@ public class ProjectTableEntity {
     private Timestamp endDate;
 
     @Id
+    @GeneratedValue
     @Column(name = "project_id", nullable = false)
     public Long getProjectId() {
         return projectId;

@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     private ApiInfo metaInfo() {
         ApiInfo apiInfo = new ApiInfo(
-                "Web App",
+                "Tytuł",
                 "Opis",
                 "Wersja",
                 "Terms of Service",

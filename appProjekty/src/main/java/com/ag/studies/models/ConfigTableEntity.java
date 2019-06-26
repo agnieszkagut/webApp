@@ -1,10 +1,12 @@
 package com.ag.studies.models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "config_table", schema = "projekty", catalog = "")
+@Table(name = "config_table", schema = "projekty")
 public class ConfigTableEntity {
     private Long configId;
     private Long userId;
@@ -14,6 +16,7 @@ public class ConfigTableEntity {
     private ProjectTableEntity projectTableByProjectId;
 
     @Id
+    @GeneratedValue
     @Column(name = "config_id", nullable = false)
     public Long getConfigId() {
         return configId;

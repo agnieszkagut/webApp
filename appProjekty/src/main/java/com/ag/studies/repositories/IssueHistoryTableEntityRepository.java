@@ -8,4 +8,5 @@ import java.util.List;
 public interface IssueHistoryTableEntityRepository extends JpaRepository<IssueHistoryTableEntity, Long> {
     List<IssueHistoryTableEntity> findByIssueIdOrderByDateModifiedDesc(Long issueId);
 
+    IssueHistoryTableEntity[] findByIssueId(Long id);
 }

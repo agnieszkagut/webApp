@@ -1,5 +1,6 @@
 package com.ag.studies.services;
 
+import com.ag.studies.EntityNotFoundException;
 import com.ag.studies.models.*;
 
 import java.math.BigDecimal;
@@ -9,55 +10,55 @@ import java.util.Optional;
 
 public interface ProjectsSevice {
 
+    void messageToLeader(Long creatorId, Long projectLeader, String subject, String newMessage) throws EntityNotFoundException;
+
     List<ProjectTableEntity> findAll();
 
-    void delete(Long id);
+    void delete(Long id) throws EntityNotFoundException;
 
     long count();
 
-    long countByStatus(String status);
+    ProjectTableEntity updateProject(Long id, String new_status) throws EntityNotFoundException;
 
-    ProjectTableEntity updateProject(Long id, String new_status);
+    long countEmployeesByProjectId(Long projectId) throws EntityNotFoundException;
 
-    long countEmployeesByProjectId(Long projectId);
+    List<UserTableEntity> findEmployeesByProjectId(Long projectId) throws EntityNotFoundException;
 
-    List<UserTableEntity> findEmployeesByProjectId(Long projectId);
+    UserTableEntity findProjectLeader(Long projectId) throws EntityNotFoundException;
 
-    UserTableEntity findProjectLeader(Long projectId);
+    List<SponsorshipTableEntity> findSponsorships(Long projectId) throws EntityNotFoundException;
 
-    ConfigTableEntity updateUser(String userEmail, String projectName);
+    ProjectTableEntity findOneByProjectId(Long projectId) throws EntityNotFoundException;
 
-    List<SponsorshipTableEntity> findSponsorships(Long projectId);
+    long countTasksByProjectId(Long projectId) throws EntityNotFoundException;
 
-    ProjectTableEntity findOnebyProjectId(Long projectId);
+    List<TasksTableEntity> findTasksByProjectId(Long projectId) throws EntityNotFoundException;
 
-    long countTasksByProjectId(Long projectId);
+    void addSponsorship(Long projectId, String name, BigDecimal value) throws EntityNotFoundException;
 
-    List<TasksTableEntity> findTasksByProjectId(Long projectId);
+    int findUnassignedFunds(Long projectId) throws EntityNotFoundException;
 
-    void addSponsorship(Long projectId, String name, BigDecimal value);
+    int countTasksDelayed(Long projectId) throws EntityNotFoundException;
 
-    int findUnassignedFunds(Long projectId);
+    ProjectTableEntity updateProjectEnd(Long projectId, Date newEndDate) throws EntityNotFoundException;
 
-    int countTasksDelayed(Long projectId);
+    long countTasksByProjectIdByIsDone(Long projectId, Boolean i) throws EntityNotFoundException;
 
-    ProjectTableEntity updateProjectEnd(Long projectId, Date newEndDate);
+    TasksTableEntity updateTask(Long taskId) throws EntityNotFoundException;
 
-    long countTasksByProjectIdByIsDone(Long projectId, Boolean i);
-
-    TasksTableEntity updateTask(Long taskId);
-
-    void addTask(Long projectId, String name, Date deadline);
+    void addTask(Long projectId, String name, Date deadline) throws EntityNotFoundException;
 
     List<UserTableEntity> findLeaders();
 
     void addProject(String leaderEmail, String name, String description, BigDecimal sponsorship, Date endDate);
 
-    ProjectTableEntity findOnebyLeaderId(Long leaderId);
+    void addConfig(Long projectId, Long userId);
+
+    ProjectTableEntity findOnebyLeaderId(Long leaderId) throws EntityNotFoundException;
 
     void updateProjectStatus(String status);
 
-    String getProjectTitle(Long creatorId, String recipientEmail);
+    Long getProjectId(Long creatorId, String recipientEmail);
 
-    List<UserTableEntity> findOtherEmployeesByProjectId(Long projectId);
+    List<UserTableEntity> findOtherEmployeesByProjectId(Long projectId) throws EntityNotFoundException;
 }

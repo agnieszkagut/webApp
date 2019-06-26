@@ -3,6 +3,7 @@ package com.ag.studies.repositories;
 import com.ag.studies.models.TasksTableEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface TasksTableEntityRepository extends JpaRepository<TasksTableEnti
 
     List<TasksTableEntity> findByProjectId(Long projectId);
 
-    int countByDeadlineAfter(LocalDate currentDate);
+    int countByProjectIdAndDeadlineBefore(Long projectId, Date currentDate);
 }

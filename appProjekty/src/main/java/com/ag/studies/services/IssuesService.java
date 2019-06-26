@@ -1,32 +1,30 @@
 package com.ag.studies.services;
 
+import com.ag.studies.EntityNotFoundException;
 import com.ag.studies.models.IssueHistoryTableEntity;
 import com.ag.studies.models.IssueTableEntity;
 
 import java.util.List;
 
 public interface IssuesService {
-    List<IssueTableEntity> findLastThree();
-    List<IssueTableEntity> findLastThreeByStatus(String status);
+    List<IssueTableEntity> findWithLimit(Integer limit);
 
-    IssueTableEntity addIssue(Long userId, String projectTitle, String title, String inscription);
+    IssueTableEntity addIssue(Long userId, Long projectId, String title, String inscription) throws EntityNotFoundException;
 
-    List<IssueHistoryTableEntity> findByIssueId(Long id);
-    List<IssueTableEntity> findByProjectId(Long id);
-    List<IssueTableEntity> findByProjectIdAndByType(Long id, String type);
+    List<IssueHistoryTableEntity> findByIssueId(Long id) throws EntityNotFoundException;
+    List<IssueTableEntity> findByProjectId(Long id) throws EntityNotFoundException;
     List<IssueTableEntity> findAll();
 
-    void delete(Long id);
-    void deleteByProjectId(Long id);
-    void deleteByProjectIdAndByType(Long id, String type);
+    void delete(Long id) throws EntityNotFoundException;
+    void deleteByProjectId(Long id) throws EntityNotFoundException;
     void deleteAll();
 
     long count();
-    long countByProjectId(Long id);
-    long countByProjectIdAndByType(Long id, String type);
 
     IssueTableEntity updateIssue(Long id, String new_type);
 
-    void addIssueModification(Long issId, Long ussId, String newIssueModification);
+    void addIssueModification(Long issId, Long ussId, String newIssueModification) throws EntityNotFoundException;
 
+    List<IssuesServiceImpl.Issue> cutIssues(List<IssueTableEntity> all);
+    List<IssuesServiceImpl.IssueHistory> cutIssueHistory(List<IssueHistoryTableEntity> all);
 }

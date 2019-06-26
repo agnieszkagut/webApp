@@ -14,6 +14,7 @@ public class CalendarEntriesTableEntity {
     private ProjectTableEntity projectTableByProjectId;
 
     @Id
+    @GeneratedValue
     @Column(name = "calendar_entry_id", nullable = false)
     public Integer getCalendarEntryId() {
         return calendarEntryId;

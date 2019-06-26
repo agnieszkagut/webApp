@@ -1,11 +1,17 @@
 package com.ag.studies.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,7 +31,7 @@ public class MessageTableEntity {
     private MessageTableEntity messageTableByParentMessageId;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "message_id", nullable = false)
     public Long getMessageId() {
         return messageId;
@@ -133,5 +139,32 @@ public class MessageTableEntity {
 
     public void setMessageTableByParentMessageId(MessageTableEntity messageTableByParentMessageId) {
         this.messageTableByParentMessageId = messageTableByParentMessageId;
+    }
+
+    @Mapper
+    public interface MessageMapper {
+        MessageMapper INSTANCE = Mappers.getMapper( MessageMapper.class );
+        Message messageEntityToMessage(MessageTableEntity message);
+        List<Message> messageEntityToMessage(List<MessageTableEntity> messages);
+    }
+
+    public static List<Message> mapToMessage(List<MessageTableEntity> messages){
+        return MessageMapper.INSTANCE.messageEntityToMessage(messages);
+    }
+    public static Message mapToMessage(MessageTableEntity message){
+        return MessageMapper.INSTANCE.messageEntityToMessage(message);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Message{
+        private Long messageId;
+        private Long creatorId;
+        private Long parentMessageId;
+        private String subject;
+        private String messageBody;
+        private Timestamp createDate;
+        private Short isRead;
     }
 }

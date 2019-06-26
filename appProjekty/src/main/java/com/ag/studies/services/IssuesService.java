@@ -24,7 +24,4 @@ public interface IssuesService {
     IssueTableEntity updateIssue(Long id, String new_type);
 
     void addIssueModification(Long issId, Long ussId, String newIssueModification) throws EntityNotFoundException;
-
-    List<IssuesServiceImpl.Issue> cutIssues(List<IssueTableEntity> all);
-    List<IssuesServiceImpl.IssueHistory> cutIssueHistory(List<IssueHistoryTableEntity> all);
 }

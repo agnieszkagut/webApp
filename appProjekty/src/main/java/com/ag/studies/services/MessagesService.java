@@ -33,5 +33,4 @@ public interface MessagesService {
 
     void addMessageRecipient(String recipientEmail, Long messageId);
 
-    List<MessagesServiceImpl.Message> cutMessages(List<MessageTableEntity> all);
 }

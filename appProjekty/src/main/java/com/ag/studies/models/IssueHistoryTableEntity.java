@@ -1,11 +1,17 @@
 package com.ag.studies.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,7 +30,7 @@ public class IssueHistoryTableEntity {
     private UserTableEntity userTableByUserId;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "issue_history_id", nullable = false)
     public Long getIssueHistoryId() {
         return issueHistoryId;
@@ -121,5 +127,31 @@ public class IssueHistoryTableEntity {
 
     public void setUserTableByUserId(UserTableEntity userTableByUserId) {
         this.userTableByUserId = userTableByUserId;
+    }
+
+    @Mapper
+    public interface IssueHistoryMapper {
+        IssueHistoryMapper INSTANCE = Mappers.getMapper( IssueHistoryMapper.class );
+        IssueHistory issueHistoryEntityToIssueHistory(IssueHistoryTableEntity issue);
+        List<IssueHistory> issueHistoryEntityToIssueHistory(List<IssueHistoryTableEntity> issues);
+    }
+
+    public static List<IssueHistory> mapToIssueHistory(List<IssueHistoryTableEntity> issuesHistory){
+        return IssueHistoryMapper.INSTANCE.issueHistoryEntityToIssueHistory(issuesHistory);
+    }
+    public static IssueHistory mapToIssueHistory(IssueHistoryTableEntity issueHistory){
+        return IssueHistoryMapper.INSTANCE.issueHistoryEntityToIssueHistory(issueHistory);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class IssueHistory {
+        private Long issueHistoryId;
+        private Long issueId;
+        private Long userId;
+        private String oldValue;
+        private String newValue;
+        private Timestamp dateModified;
     }
 }

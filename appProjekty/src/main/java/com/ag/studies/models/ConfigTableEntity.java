@@ -1,8 +1,14 @@
 package com.ag.studies.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +22,7 @@ public class ConfigTableEntity {
     private ProjectTableEntity projectTableByProjectId;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "config_id", nullable = false)
     public Long getConfigId() {
         return configId;
@@ -90,5 +96,29 @@ public class ConfigTableEntity {
 
     public void setProjectTableByProjectId(ProjectTableEntity projectTableByProjectId) {
         this.projectTableByProjectId = projectTableByProjectId;
+    }
+
+    @Mapper
+    public interface ConfigMapper {
+        ConfigMapper INSTANCE = Mappers.getMapper( ConfigMapper.class );
+        Config configEntityToConfig(ConfigTableEntity config);
+        List<Config> configEntityToConfig(List<ConfigTableEntity> configs);
+    }
+
+    public static List<Config> mapToConfig(List<ConfigTableEntity> configs){
+        return ConfigMapper.INSTANCE.configEntityToConfig(configs);
+    }
+    public static Config mapToConfig(ConfigTableEntity config){
+        return ConfigMapper.INSTANCE.configEntityToConfig(config);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Config{
+        private Long configId;
+        private Long userId;
+        private Long projectId;
+        private Long accessLevel;
     }
 }

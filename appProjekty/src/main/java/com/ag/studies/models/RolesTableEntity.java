@@ -11,7 +11,7 @@ public class RolesTableEntity {
     private UserTableEntity userTableByUsername;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long getRole_id() {
         return role_id;
     }

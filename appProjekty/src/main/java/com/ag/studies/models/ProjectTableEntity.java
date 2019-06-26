@@ -23,7 +23,7 @@ public class ProjectTableEntity {
     private Timestamp endDate;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "project_id", nullable = false)
     public Long getProjectId() {
         return projectId;

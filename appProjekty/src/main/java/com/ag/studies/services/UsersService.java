@@ -13,7 +13,4 @@ public interface UsersService {
     List<UserTableEntity> findListOfUsers();
     ConfigTableEntity updateUser(String userEmail, String projectName) throws EntityNotFoundException;
     void addRole(String username, String position, Long userId);
-    List<UsersServiceImpl.User> cutUsers(List<UserTableEntity> all);
-
-    UsersServiceImpl.Config cutConfig(ConfigTableEntity updateUser);
 }

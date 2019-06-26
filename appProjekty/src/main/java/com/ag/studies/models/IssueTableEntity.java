@@ -1,11 +1,17 @@
 package com.ag.studies.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,7 +31,7 @@ public class IssueTableEntity {
     private UserTableEntity userTableByUserId;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "issue_id", nullable = false)
     public Long getIssueId() {
         return issueId;
@@ -132,4 +138,32 @@ public class IssueTableEntity {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Mapper
+    public interface IssueMapper {
+        IssueMapper INSTANCE = Mappers.getMapper( IssueMapper.class );
+        Issue issueEntityToIssue(IssueTableEntity issue);
+        List<Issue> issueEntityToIssue(List<IssueTableEntity> issues);
+    }
+
+    public static List<Issue> mapToIssue(List<IssueTableEntity> issues){
+        return IssueMapper.INSTANCE.issueEntityToIssue(issues);
+    }
+    public static Issue mapToIssue(IssueTableEntity issue){
+        return IssueMapper.INSTANCE.issueEntityToIssue(issue);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Issue{
+        private Long issueId;
+        private Long projectId;
+        private Long userId;
+        private String title;
+        private String status;
+        private Timestamp dateSubmitted;
+        private Timestamp lastUpdated;
+    }
+
 }

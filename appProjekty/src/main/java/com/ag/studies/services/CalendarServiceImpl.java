@@ -41,11 +41,7 @@ public class CalendarServiceImpl implements CalendarService {
         entry.setDate(new Timestamp(selectedDate.getTime()));
         entry.setProjectId(projectId.intValue());
         entry.setDescription(newInscription);
-        try {
-            calendarRepository.save(entry);
-        }catch (DataIntegrityViolationException ex){
-            addNewEntry(selectedDate, projectId, newInscription);
-        }
+        calendarRepository.save(entry);
     }
 
     @Override

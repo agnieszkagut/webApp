@@ -16,7 +16,7 @@ public class TasksTableEntity {
     private ProjectTableEntity tasksTableByProjectId;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "task_id", nullable = false)
     public Long getTaskId() {
         return taskId;

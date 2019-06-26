@@ -1,12 +1,18 @@
 package com.ag.studies.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,7 +33,7 @@ public class UserTableEntity {
     private Integer lostPasswordRequestCount;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     public Long getUserId() {
         return userId;
@@ -147,5 +153,27 @@ public class UserTableEntity {
     @Override
     public int hashCode() {
         return Objects.hash(userId, username, realname, email, password, position, lastVisit, dateCreated, lostPasswordRequestCount);
+    }
+
+    @Mapper
+    public interface UserMapper {
+        UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
+        User userEntityToUser(UserTableEntity user);
+        List<User> userEntityToUser(List<UserTableEntity> users);
+    }
+
+    public static List<User> mapToUser(List<UserTableEntity> users){
+        return UserMapper.INSTANCE.userEntityToUser(users);
+    }
+    public static User mapToUser(UserTableEntity user){
+        return UserMapper.INSTANCE.userEntityToUser(user);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class User{
+        String email;
+        String realname;
     }
 }

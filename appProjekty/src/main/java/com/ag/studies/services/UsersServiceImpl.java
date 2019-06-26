@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,61 +22,28 @@ import java.util.List;
 public class UsersServiceImpl implements UsersService {
 
     @Autowired
-    private UserTableEntityRepository usertableentityRepository;
+    private UserTableEntityRepository userTableEntityRepository;
     @Autowired
-    private RolesTableEntityRepository rolestableentityRepository;
+    private RolesTableEntityRepository rolesTableEntityRepository;
     @Autowired
-    private ConfigTableEntityRepository configtableentityRepository;
+    private ConfigTableEntityRepository configTableEntityRepository;
     @Autowired
-    private ProjectTableEntityRepository projecttableentityRepository;
+    private ProjectTableEntityRepository projectTableEntityRepository;
 
     @Override
     public List<UserTableEntity> findListOfUsers() {
-        return usertableentityRepository.findAll();
-    }
-
-    @Override
-    public List<User> cutUsers(List<UserTableEntity> all){
-        List<User> userList = new ArrayList<>();
-        for(UserTableEntity us : all){
-            userList.add(new User(us.getEmail(), us.getRealname()));
-        }
-        return userList;
-    }
-
-    @Override
-    public Config cutConfig(ConfigTableEntity updateUser) {
-        return new Config(updateUser.getConfigId(), updateUser.getUserId(), updateUser.getProjectId(), updateUser.getAccessLevel());
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Config{
-        private Long configId;
-        private Long userId;
-        private Long projectId;
-        private Long accessLevel;
-    }
-
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class User{
-        String email;
-        String realname;
+        return userTableEntityRepository.findAll();
     }
 
     @Override
     public UserTableEntity findByUsername(String username) throws EntityNotFoundException {
-        UserTableEntity result = usertableentityRepository.findByUsername(username);
+        UserTableEntity result = userTableEntityRepository.findByUsername(username);
         if(result == null) throw new EntityNotFoundException(UserTableEntity.class, "username", username);
         return result;
     }
     @Override
     public String addUser(String email, String username, String realname, String encodedPassword, String position) throws AlreadyExistsException {
-        for(UserTableEntity u: usertableentityRepository.findAll()){
+        for(UserTableEntity u: userTableEntityRepository.findAll()){
             if(email.equals(u.getEmail())) throw new AlreadyExistsException("email", UserTableEntity.class, email);
             if(username.equals(u.getUsername())) throw new AlreadyExistsException("username", UserTableEntity.class, username);
         }
@@ -89,13 +55,8 @@ public class UsersServiceImpl implements UsersService {
         user.setPosition(position);
         user.setAccessLevel(position);
         user.setLostPasswordRequestCount(0);
-        try{
-            Long userId = usertableentityRepository.save(user).getUserId();
-            addRole(username, position, userId);
-        }catch (DataIntegrityViolationException ex){
-            addUser(email, username, realname, encodedPassword, position);
-        }
-
+        Long userId = userTableEntityRepository.save(user).getUserId();
+        addRole(username, position, userId);
         return "ok";
     }
 
@@ -107,22 +68,19 @@ public class UsersServiceImpl implements UsersService {
         else{
             role.setRole("interesariusz");
         }
-        role.setUserTableByUsername(usertableentityRepository.getOne(userId));
-        try {
-            rolestableentityRepository.save(role);
-        }catch (DataIntegrityViolationException ex){
-            addRole(username, position, userId);
-        }
+        role.setUserTableByUsername(userTableEntityRepository.getOne(userId));
+        rolesTableEntityRepository.save(role);
+        addRole(username, position, userId);
     }
 
     @Override
     public ConfigTableEntity updateUser(String userEmail, String projectName) throws EntityNotFoundException {
-        UserTableEntity user = usertableentityRepository.findByEmail(userEmail);
+        UserTableEntity user = userTableEntityRepository.findByEmail(userEmail);
         if(user == null) throw new EntityNotFoundException(UserTableEntity.class, "userEmail", userEmail);
         Long userId = user.getUserId();
-        ConfigTableEntity updatedConfig = configtableentityRepository.findByUserId(userId);
-        Long projectId = projecttableentityRepository.findByNameEquals(projectName).getProjectId();
+        ConfigTableEntity updatedConfig = configTableEntityRepository.findByUserId(userId);
+        Long projectId = projectTableEntityRepository.findByNameEquals(projectName).getProjectId();
         updatedConfig.setProjectId(projectId);
-        return configtableentityRepository.save(updatedConfig);
+        return configTableEntityRepository.save(updatedConfig);
     }
 }

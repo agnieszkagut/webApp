@@ -27,9 +27,9 @@ public class UsersController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping
-    public List<UsersServiceImpl.User> getListOfUsers(){
+    public List<UserTableEntity.User> getListOfUsers(){
 
-        return usersService.cutUsers(usersService.findListOfUsers());
+        return UserTableEntity.mapToUser(usersService.findListOfUsers());
     }
 
     @GetMapping("/userInfo/{username}")
@@ -49,8 +49,8 @@ public class UsersController {
     }
 
     @PutMapping("/{username}")
-    public UsersServiceImpl.Config updateUser(@PathVariable(value = "username") String username, @RequestBody String project) throws EntityNotFoundException{
-        return usersService.cutConfig(usersService.updateUser(username, project));
+    public ConfigTableEntity.Config updateUser(@PathVariable(value = "username") String username, @RequestBody String project) throws EntityNotFoundException{
+        return ConfigTableEntity.mapToConfig(usersService.updateUser(username, project));
     }
 
     @PostMapping

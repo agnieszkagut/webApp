@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(allowCredentials="true")
 @RestController
@@ -24,9 +23,9 @@ public class IssuesController {
     private IssuesServiceImpl issuesService;
 
     @GetMapping
-    public List<IssuesServiceImpl.Issue> getAll(@RequestParam(value = "limit", required = false) Optional<Integer> limit){
-        if(limit.isPresent())   return issuesService.cutIssues(issuesService.findWithLimit(limit.get()));
-        else    return issuesService.cutIssues(issuesService.findAll());
+    public List<IssueTableEntity.Issue> getAll(@RequestParam(value = "limit", required = false) Integer limit){
+        if(limit != null)   return IssueTableEntity.mapToIssue(issuesService.findWithLimit(limit));
+        else    return IssueTableEntity.mapToIssue(issuesService.findAll());
     }
 
     @PostMapping
@@ -82,12 +81,12 @@ public class IssuesController {
     }
 
     @GetMapping("/{issueId}")
-    public List<IssuesServiceImpl.IssueHistory> getById(@PathVariable(value = "issueId") Long id) throws EntityNotFoundException {
-        return issuesService.cutIssueHistory(issuesService.findByIssueId(id));
+    public List<IssueHistoryTableEntity.IssueHistory> getById(@PathVariable(value = "issueId") Long id) throws EntityNotFoundException {
+        return IssueHistoryTableEntity.mapToIssueHistory(issuesService.findByIssueId(id));
     }
     @GetMapping("/project/{projectId}")
-    public List<IssuesServiceImpl.Issue> getByProjectId(@PathVariable(value = "projectId") Long id) throws EntityNotFoundException{
-        return issuesService.cutIssues(issuesService.findByProjectId(id));
+    public List<IssueTableEntity.Issue> getByProjectId(@PathVariable(value = "projectId") Long id) throws EntityNotFoundException{
+        return IssueTableEntity.mapToIssue(issuesService.findByProjectId(id));
     }
 
     @DeleteMapping("/{issueId}")

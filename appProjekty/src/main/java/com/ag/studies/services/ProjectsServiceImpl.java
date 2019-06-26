@@ -3,13 +3,9 @@ package com.ag.studies.services;
 import com.ag.studies.EntityNotFoundException;
 import com.ag.studies.models.*;
 import com.ag.studies.repositories.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,152 +18,148 @@ import java.util.List;
 public class ProjectsServiceImpl implements ProjectsSevice {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    private ProjectTableEntityRepository projecttableentityRepository;
+    private ProjectTableEntityRepository projectTableEntityRepository;
     @Autowired
-    private SponsorshipTableEntityRepository sponsorshiptableentityRepository;
+    private SponsorshipTableEntityRepository sponsorshipTableEntityRepository;
     @Autowired
-    private ConfigTableEntityRepository configtableentityRepository;
+    private ConfigTableEntityRepository configTableEntityRepository;
     @Autowired
-    private UserTableEntityRepository usertableentityRepository;
+    private UserTableEntityRepository userTableEntityRepository;
     @Autowired
-    private TasksTableEntityRepository taskstableentityRepository;
+    private TasksTableEntityRepository tasksTableEntityRepository;
     @Autowired
     private MessagesServiceImpl messagesService;
 
     @Override
     public void messageToLeader(Long creatorId, Long projectLeader, String subject, String newMessage)  throws EntityNotFoundException {
-        UserTableEntity user = usertableentityRepository.getOne(projectLeader);
+        UserTableEntity user = userTableEntityRepository.getOne(projectLeader);
         if(user == null) throw new EntityNotFoundException(UserTableEntity.class, "projectLeader", projectLeader.toString());
         String email = user.getEmail();
         messagesService.addMessage(creatorId, email, subject, newMessage);
     }
     @Override
     public List<ProjectTableEntity> findAll() {
-        return projecttableentityRepository.findAll();
+        return projectTableEntityRepository.findAll();
     }
 
     @Override
     public void delete(Long id) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(id).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", id.toString());
-        for(ConfigTableEntity config : configtableentityRepository.findByProjectId(id)){
-            configtableentityRepository.deleteById(config.getConfigId());
+        if(!projectTableEntityRepository.findById(id).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", id.toString());
+        for(ConfigTableEntity config : configTableEntityRepository.findByProjectId(id)){
+            configTableEntityRepository.deleteById(config.getConfigId());
         }
-        projecttableentityRepository.deleteById(id);
+        projectTableEntityRepository.deleteById(id);
     }
 
     @Override
     public long count() {
-        return projecttableentityRepository.count();
+        return projectTableEntityRepository.count();
     }
 
     @Override
     public ProjectTableEntity updateProject(Long id, String new_status) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(id).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", id.toString());
-        ProjectTableEntity updatedProject = projecttableentityRepository.findById(id)
+        if(!projectTableEntityRepository.findById(id).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", id.toString());
+        ProjectTableEntity updatedProject = projectTableEntityRepository.findById(id)
                 .orElseThrow(() -> new NotFoundProjectEntity(id));
         updatedProject.setStatus(new_status);
-        return projecttableentityRepository.save(updatedProject);
+        return projectTableEntityRepository.save(updatedProject);
     }
     @Override
     public long countEmployeesByProjectId(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        return configtableentityRepository.countByProjectId(projectId);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        return configTableEntityRepository.countByProjectId(projectId);
     }
 
     @Override
     public List<UserTableEntity> findEmployeesByProjectId(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        List<ConfigTableEntity> ConfigList = configtableentityRepository.findByProjectId(projectId);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        List<ConfigTableEntity> ConfigList = configTableEntityRepository.findByProjectId(projectId);
         List<UserTableEntity> Employees = new ArrayList<UserTableEntity>();
         for(ConfigTableEntity tmp : ConfigList){
-            Employees.add(usertableentityRepository.findByUserId(tmp.getUserId()));
+            Employees.add(userTableEntityRepository.findByUserId(tmp.getUserId()));
         }
         return Employees;
     }
     @Override
     public List<UserTableEntity> findOtherEmployeesByProjectId(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        List<ConfigTableEntity> ConfigList = configtableentityRepository.findByProjectIdNot(projectId);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        List<ConfigTableEntity> ConfigList = configTableEntityRepository.findByProjectIdNot(projectId);
         List<Long> Indexes = new ArrayList<Long>();
         for(ConfigTableEntity tmp : ConfigList){
-            if(usertableentityRepository.getOne(tmp.getUserId()).getPosition().equals("kierownik projektu")
-                    || usertableentityRepository.getOne(tmp.getUserId()).getPosition().equals("kierownik programu")
-                    || usertableentityRepository.getOne(tmp.getUserId()).getPosition().equals("admin")) {
+            if(userTableEntityRepository.getOne(tmp.getUserId()).getPosition().equals("kierownik projektu")
+                    || userTableEntityRepository.getOne(tmp.getUserId()).getPosition().equals("kierownik programu")
+                    || userTableEntityRepository.getOne(tmp.getUserId()).getPosition().equals("admin")) {
 
             }
             else Indexes.add(tmp.getUserId());
         }
         List<UserTableEntity> Employees = new ArrayList<UserTableEntity>();
         for(Long index : Indexes){
-            Employees.add(usertableentityRepository.findByUserId(index));
+            Employees.add(userTableEntityRepository.findByUserId(index));
         }
         return Employees;
     }
     @Override
     public UserTableEntity findProjectLeader(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        Long id = configtableentityRepository.findByProjectIdAndAccessLevel(projectId, Long.valueOf(1)).getUserId();
-        return usertableentityRepository.getOne(id);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        Long id = configTableEntityRepository.findByProjectIdAndAccessLevel(projectId, Long.valueOf(1)).getUserId();
+        return userTableEntityRepository.getOne(id);
     }
 
     @Override
     public List<SponsorshipTableEntity> findSponsorships(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        return sponsorshiptableentityRepository.findByProjectId(projectId);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        return sponsorshipTableEntityRepository.findByProjectId(projectId);
     }
 
     @Override
     public ProjectTableEntity findOneByProjectId(Long projectId)  throws EntityNotFoundException {
-        ProjectTableEntity result = projecttableentityRepository.findOneByProjectId(projectId);
+        ProjectTableEntity result = projectTableEntityRepository.findOneByProjectId(projectId);
         if(result == null) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
         return result;
     }
 
     @Override
     public long countTasksByProjectId(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        return taskstableentityRepository.countByProjectId(projectId);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        return tasksTableEntityRepository.countByProjectId(projectId);
     }
 
     @Override
     public long countTasksByProjectIdByIsDone(Long projectId, Boolean i) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        return taskstableentityRepository.countByProjectIdAndIsDone(projectId, i);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        return tasksTableEntityRepository.countByProjectIdAndIsDone(projectId, i);
     }
 
     @Override
     public TasksTableEntity updateTask(Long taskId) throws EntityNotFoundException {
-        if(!taskstableentityRepository.findById(taskId).isPresent()) throw new EntityNotFoundException(TasksTableEntity.class, "taskId", taskId.toString());
-        TasksTableEntity updatedTask = taskstableentityRepository.getOne(taskId);
+        if(!tasksTableEntityRepository.findById(taskId).isPresent()) throw new EntityNotFoundException(TasksTableEntity.class, "taskId", taskId.toString());
+        TasksTableEntity updatedTask = tasksTableEntityRepository.getOne(taskId);
         if(updatedTask.getIsDone()){
             updatedTask.setIsDone(false);
         }
         else{
             updatedTask.setIsDone(true);
         }
-        taskstableentityRepository.save(updatedTask);
+        tasksTableEntityRepository.save(updatedTask);
         return updatedTask;
     }
 
     @Override
     public void addTask(Long projectId, String name, Date deadline) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
         TasksTableEntity newTask = new TasksTableEntity();
         newTask.setProjectId(projectId);
         newTask.setIsDone(false);
         Timestamp ts=new Timestamp(deadline.getTime());
         newTask.setDeadline(ts);
         newTask.setName(name);
-        try{
-            taskstableentityRepository.save(newTask);
-        }catch (DataIntegrityViolationException ex){
-            addTask(projectId, name, deadline);
-        }
+        tasksTableEntityRepository.save(newTask);
     }
 
     @Override
     public List<UserTableEntity> findLeaders() {
-        return usertableentityRepository.findByPosition("kierownik projektu");
+        return userTableEntityRepository.findByPosition("kierownik projektu");
     }
 
     @Override
@@ -179,13 +171,9 @@ public class ProjectsServiceImpl implements ProjectsSevice {
         newProject.setSponsorship(sponsorship);
         Timestamp ts=new Timestamp(endDate.getTime());
         newProject.setEndDate(ts);
-        try{
-            Long projectId = projecttableentityRepository.save(newProject).getProjectId();
-            Long userId = (usertableentityRepository.findByEmail(leaderEmail).getUserId());
-            addConfig(projectId, userId);
-        }catch(DataIntegrityViolationException ex){
-            addProject(leaderEmail,name,description,sponsorship,endDate);
-        }
+        Long projectId = projectTableEntityRepository.save(newProject).getProjectId();
+        Long userId = (userTableEntityRepository.findByEmail(leaderEmail).getUserId());
+        addConfig(projectId, userId);
     }
 
     @Override
@@ -194,26 +182,22 @@ public class ProjectsServiceImpl implements ProjectsSevice {
         newConfig.setProjectId(projectId);
         newConfig.setUserId(userId);
         newConfig.setAccessLevel(1L);
-        newConfig.setUserTableByUserId(usertableentityRepository.getOne(userId));
-        newConfig.setProjectTableByProjectId(projecttableentityRepository.getOne(projectId));
-        try {
-            configtableentityRepository.save(newConfig);
-        }catch (DataIntegrityViolationException ex){
-            addConfig(projectId, userId);
-        }
+        newConfig.setUserTableByUserId(userTableEntityRepository.getOne(userId));
+        newConfig.setProjectTableByProjectId(projectTableEntityRepository.getOne(projectId));
+        configTableEntityRepository.save(newConfig);
     }
 
     @Override
     public ProjectTableEntity findOnebyLeaderId(Long leaderId) throws EntityNotFoundException {
-        ConfigTableEntity config = configtableentityRepository.findByUserIdAndAccessLevel(leaderId, Long.valueOf(1));
+        ConfigTableEntity config = configTableEntityRepository.findByUserIdAndAccessLevel(leaderId, Long.valueOf(1));
         if(config == null) throw new EntityNotFoundException(ConfigTableEntity.class, "leaderId", leaderId.toString());
         Long projectId = config.getProjectId();
-        return projecttableentityRepository.getOne(projectId);
+        return projectTableEntityRepository.getOne(projectId);
     }
 
     @Override
     public void updateProjectStatus(String status) {
-        for(ProjectTableEntity p: projecttableentityRepository.findAll()){
+        for(ProjectTableEntity p: projectTableEntityRepository.findAll()){
             p.setStatus(status);
         }
     }
@@ -221,15 +205,15 @@ public class ProjectsServiceImpl implements ProjectsSevice {
     @Override
     public Long getProjectId(Long creatorId, String recipientEmail) {
         Long id;
-        if(usertableentityRepository.getOne(creatorId).getPosition().equals("kierownik programu")){
-            id = configtableentityRepository.findByUserId(
-                            usertableentityRepository.findByEmailEquals(
+        if(userTableEntityRepository.getOne(creatorId).getPosition().equals("kierownik programu")){
+            id = configTableEntityRepository.findByUserId(
+                            userTableEntityRepository.findByEmailEquals(
                                     recipientEmail)
                                     .getUserId())
                             .getProjectId();
         }
         else{
-                id = configtableentityRepository.findByUserId(creatorId)
+                id = configTableEntityRepository.findByUserId(creatorId)
                                 .getProjectId();
         }
         return id;
@@ -237,48 +221,44 @@ public class ProjectsServiceImpl implements ProjectsSevice {
 
     @Override
     public List<TasksTableEntity> findTasksByProjectId(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
-        return taskstableentityRepository.findByProjectId(projectId);
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        return tasksTableEntityRepository.findByProjectId(projectId);
     }
 
     @Override
     public void addSponsorship(Long projectId, String name, BigDecimal value) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
         SponsorshipTableEntity newSponsorship = new SponsorshipTableEntity();
         newSponsorship.setProjectId(projectId);
         newSponsorship.setName(name);
         newSponsorship.setValue(value);
-        try{
-            sponsorshiptableentityRepository.save(newSponsorship);
-        }catch (DataIntegrityViolationException ex){
-            addSponsorship(projectId, name, value);
-        }
+        sponsorshipTableEntityRepository.save(newSponsorship);
     }
 
     @Override
     public int findUnassignedFunds(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
         int assignedFunds = 0;
-        for(SponsorshipTableEntity e : sponsorshiptableentityRepository.findByProjectId(projectId)){
+        for(SponsorshipTableEntity e : sponsorshipTableEntityRepository.findByProjectId(projectId)){
             assignedFunds+=e.getValue().intValue();
         }
-        return (projecttableentityRepository.findOneByProjectId(projectId).getSponsorship().intValue() - assignedFunds);
+        return (projectTableEntityRepository.findOneByProjectId(projectId).getSponsorship().intValue() - assignedFunds);
     }
 
     @Override
     public int countTasksDelayed(Long projectId) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
         Date currentDate = new Date(new java.util.Date().getTime());
-        return taskstableentityRepository.countByProjectIdAndDeadlineBefore(projectId, currentDate);
+        return tasksTableEntityRepository.countByProjectIdAndDeadlineBefore(projectId, currentDate);
     }
 
     @Override
     public ProjectTableEntity updateProjectEnd(Long projectId, Date newEndDate) throws EntityNotFoundException {
-        if(!projecttableentityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
+        if(!projectTableEntityRepository.findById(projectId).isPresent()) throw new EntityNotFoundException(ProjectTableEntity.class, "projectId", projectId.toString());
         ProjectTableEntity updatedProject = new ProjectTableEntity();
         Timestamp ts=new Timestamp(newEndDate.getTime());
         updatedProject.setEndDate(ts);
-        projecttableentityRepository.save(updatedProject);
+        projectTableEntityRepository.save(updatedProject);
         return updatedProject;
     }
 

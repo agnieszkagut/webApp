@@ -2,7 +2,6 @@ package com.ag.studies.services;
 
 import com.ag.studies.EntityNotFoundException;
 import com.ag.studies.models.UserTableEntity;
-import com.ag.studies.repositories.RolesTableEntityRepository;
 import com.ag.studies.repositories.UserTableEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,12 @@ public class LoginServiceImpl implements LoginService {
 
 
     @Autowired
-    private UserTableEntityRepository usertableentityRepository;
+    private UserTableEntityRepository userTableEntityRepository;
 
     @Override
     public int login(String username) throws EntityNotFoundException {
-        if(usertableentityRepository.findByUsername(username) == null) throw new EntityNotFoundException(UserTableEntity.class, "username", username);
-        String text = usertableentityRepository.findByUsername(username).getPosition();
+        if(userTableEntityRepository.findByUsername(username) == null) throw new EntityNotFoundException(UserTableEntity.class, "username", username);
+        String text = userTableEntityRepository.findByUsername(username).getPosition();
         try{
             return Role.valueOf(text.replaceAll(" ", "_")).value;
         }

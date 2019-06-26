@@ -26,17 +26,17 @@ public class MessagesController {
     private ProjectsServiceImpl projectsService;
 
     @GetMapping("/{messageId}/replies")
-    public List<MessagesServiceImpl.Message> getConversation(@PathVariable(value = "messageId") Long messageId){
-        return messagesService.cutMessages(messagesService.findConversation(messageId));
+    public List<MessageTableEntity.Message> getConversation(@PathVariable(value = "messageId") Long messageId){
+        return MessageTableEntity.mapToMessage(messagesService.findConversation(messageId));
     }
 
     @GetMapping("/user/{userId}/created")
-    public List<MessagesServiceImpl.Message> getByCreatorId(@PathVariable(value = "userId") Long creatorId){
-        return messagesService.cutMessages(messagesService.findByCreatorIdOrderByMessageIdDesc(creatorId));
+    public List<MessageTableEntity.Message> getByCreatorId(@PathVariable(value = "userId") Long creatorId){
+        return MessageTableEntity.mapToMessage(messagesService.findByCreatorIdOrderByMessageIdDesc(creatorId));
     }
     @GetMapping("/user/{userId}/received")
-    public List<MessagesServiceImpl.Message> getByRecipientId(@PathVariable(value = "userId") Long recipientId){
-        return messagesService.cutMessages(messagesService.findByRecipientIdOrderByMessageIdDesc(recipientId));
+    public List<MessageTableEntity.Message> getByRecipientId(@PathVariable(value = "userId") Long recipientId){
+        return MessageTableEntity.mapToMessage(messagesService.findByRecipientIdOrderByMessageIdDesc(recipientId));
     }
     @PostMapping("/{messageId}/replies")
     @ResponseStatus(HttpStatus.CREATED)

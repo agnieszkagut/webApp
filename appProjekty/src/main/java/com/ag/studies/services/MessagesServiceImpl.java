@@ -2,7 +2,6 @@ package com.ag.studies.services;
 
 import com.ag.studies.models.MessageRecipientTableEntity;
 import com.ag.studies.models.MessageTableEntity;
-import com.ag.studies.models.UserTableEntity;
 import com.ag.studies.repositories.MessageRecipientTableEntityRepository;
 import com.ag.studies.repositories.MessageTableEntityRepository;
 import com.ag.studies.repositories.UserTableEntityRepository;
@@ -10,34 +9,32 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import static java.lang.System.out;
 
 @Service
 public class MessagesServiceImpl implements MessagesService {
     @Autowired
-    private MessageTableEntityRepository messagetableentityRepository;
+    private MessageTableEntityRepository messageTableEntityRepository;
     @Autowired
-    private MessageRecipientTableEntityRepository messagerecipienttableentityRepository;
+    private MessageRecipientTableEntityRepository messageRecipientTableEntityRepository;
     @Autowired
-    private UserTableEntityRepository usertableentityRepository;
+    private UserTableEntityRepository userTableEntityRepository;
 
     @Override
     public List<MessageTableEntity> findConversation(Long messageId) {
         List<MessageTableEntity> conversation = new ArrayList<MessageTableEntity>();
-        while(messagetableentityRepository.findByMessageIdEquals(messageId).getParentMessageId() != null){
-            messageId = messagetableentityRepository.findByMessageIdEquals(messageId).getParentMessageId();
+        while(messageTableEntityRepository.findByMessageIdEquals(messageId).getParentMessageId() != null){
+            messageId = messageTableEntityRepository.findByMessageIdEquals(messageId).getParentMessageId();
         }
-        conversation.add(messagetableentityRepository.getOne(messageId));
-        while(messagetableentityRepository.findByParentMessageIdEquals(messageId) != null){
-            messageId = messagetableentityRepository.findByParentMessageIdEquals(messageId).getMessageId();
-            conversation.add(messagetableentityRepository.getOne(messageId));
+        conversation.add(messageTableEntityRepository.getOne(messageId));
+        while(messageTableEntityRepository.findByParentMessageIdEquals(messageId) != null){
+            messageId = messageTableEntityRepository.findByParentMessageIdEquals(messageId).getMessageId();
+            conversation.add(messageTableEntityRepository.getOne(messageId));
         }
         return conversation;
     }
@@ -50,14 +47,11 @@ public class MessagesServiceImpl implements MessagesService {
         newMessage.setSubject(subject);
         newMessage.setMessageBody(message);
         newMessage.setIsRead((short) 0);
-        newMessage.setUserTableByCreatorId(usertableentityRepository.getOne(user));
-        if(parentMessageId!=0)newMessage.setMessageTableByParentMessageId(messagetableentityRepository.getOne(parentMessageId));
+        newMessage.setUserTableByCreatorId(userTableEntityRepository.getOne(user));
+        if(parentMessageId!=0)newMessage.setMessageTableByParentMessageId(messageTableEntityRepository.getOne(parentMessageId));
         else newMessage.setMessageTableByParentMessageId(null);
-        try {
-            messagetableentityRepository.save(newMessage);
-        }catch(DataIntegrityViolationException ex){
-            addReply(user, recipientId, parentMessageId, subject, message);
-        }
+        Long messageId = messageTableEntityRepository.save(newMessage).getMessageId();
+        addReplyRecipient(messageId, recipientId);
     }
 
     @Override
@@ -65,13 +59,9 @@ public class MessagesServiceImpl implements MessagesService {
         MessageRecipientTableEntity newRecipient = new MessageRecipientTableEntity();
         newRecipient.setRecipientId(recipientId);
         newRecipient.setMessageId(messageId);
-        newRecipient.setUserTableByRecipientId(usertableentityRepository.getOne(recipientId));
-        newRecipient.setMessageTableByMessageId(messagetableentityRepository.getOne(messageId));
-        try {
-            messagerecipienttableentityRepository.save(newRecipient);
-        }catch (DataIntegrityViolationException ex){
-            addReplyRecipient(messageId, recipientId);
-        }
+        newRecipient.setUserTableByRecipientId(userTableEntityRepository.getOne(recipientId));
+        newRecipient.setMessageTableByMessageId(messageTableEntityRepository.getOne(messageId));
+        messageRecipientTableEntityRepository.save(newRecipient);
     }
 
     @Override
@@ -81,39 +71,31 @@ public class MessagesServiceImpl implements MessagesService {
         newMessage.setSubject(subject);
         newMessage.setMessageBody(messageBody);
         newMessage.setIsRead((short) 0);
-        newMessage.setUserTableByCreatorId(usertableentityRepository.getOne(creatorId));
-        try{
-            Long messageId = messagetableentityRepository.save(newMessage).getMessageId();
-            addMessageRecipient(recipientEmail, messageId);
-        }catch(DataIntegrityViolationException ex){
-            addMessage(creatorId, recipientEmail, subject, messageBody);
-        }
+        newMessage.setUserTableByCreatorId(userTableEntityRepository.getOne(creatorId));
+        Long messageId = messageTableEntityRepository.save(newMessage).getMessageId();
+        addMessageRecipient(recipientEmail, messageId);
     }
 
     @Override
     public void addMessageRecipient(String recipientEmail, Long messageId){
         MessageRecipientTableEntity newRecipient = new MessageRecipientTableEntity();
-        newRecipient.setRecipientId(usertableentityRepository.findByEmailEquals(recipientEmail).getUserId());
+        newRecipient.setRecipientId(userTableEntityRepository.findByEmailEquals(recipientEmail).getUserId());
         newRecipient.setMessageId(messageId);
-        newRecipient.setUserTableByRecipientId(usertableentityRepository.findByEmailEquals(recipientEmail));
-        newRecipient.setMessageTableByMessageId(messagetableentityRepository.getOne(messageId));
-        try{
-            messagerecipienttableentityRepository.save(newRecipient);
-        }catch(DataIntegrityViolationException ex){
-            addMessageRecipient(recipientEmail, messageId);
-        }
+        newRecipient.setUserTableByRecipientId(userTableEntityRepository.findByEmailEquals(recipientEmail));
+        newRecipient.setMessageTableByMessageId(messageTableEntityRepository.getOne(messageId));
+        messageRecipientTableEntityRepository.save(newRecipient);
     }
 
     @Override
     public List<MessageTableEntity> findByCreatorIdOrderByMessageIdDesc(Long creatorId) {
-        return messagetableentityRepository.findByCreatorIdOrderByMessageIdDesc(creatorId);
+        return messageTableEntityRepository.findByCreatorIdOrderByMessageIdDesc(creatorId);
     }
 
     @Override
     public List<MessageTableEntity> findByRecipientIdOrderByMessageIdDesc(Long recipientId) {
         List<MessageTableEntity> ListOfMessages = new ArrayList<MessageTableEntity>();
-        List<MessageRecipientTableEntity> ListOfRecipientConnections = messagerecipienttableentityRepository.findByRecipientId(recipientId);
-        for(MessageRecipientTableEntity i : ListOfRecipientConnections) ListOfMessages.add(messagetableentityRepository.findOneByMessageId(i.getMessageId()));
+        List<MessageRecipientTableEntity> ListOfRecipientConnections = messageRecipientTableEntityRepository.findByRecipientId(recipientId);
+        for(MessageRecipientTableEntity i : ListOfRecipientConnections) ListOfMessages.add(messageTableEntityRepository.findOneByMessageId(i.getMessageId()));
         ListOfMessages.sort(new SortByMessageId());
         return ListOfMessages;
     }
@@ -121,8 +103,8 @@ public class MessagesServiceImpl implements MessagesService {
     @Override
     public List<MessageTableEntity> findByRecipientGroupIdOrderByMessageIdDesc(Long recipientGroupId) {
         List<MessageTableEntity> ListOfMessages = new ArrayList<MessageTableEntity>();
-        List<MessageRecipientTableEntity> ListOfRecipientConnections = messagerecipienttableentityRepository.findByUserGroupId(recipientGroupId);
-        for(MessageRecipientTableEntity i : ListOfRecipientConnections) ListOfMessages.add(messagetableentityRepository.findOneByMessageId(i.getMessageId()));
+        List<MessageRecipientTableEntity> ListOfRecipientConnections = messageRecipientTableEntityRepository.findByUserGroupId(recipientGroupId);
+        for(MessageRecipientTableEntity i : ListOfRecipientConnections) ListOfMessages.add(messageTableEntityRepository.findOneByMessageId(i.getMessageId()));
         ListOfMessages.sort(new SortByMessageId());
         return ListOfMessages;
     }
@@ -130,49 +112,27 @@ public class MessagesServiceImpl implements MessagesService {
     @Override
     public List<MessageTableEntity> findBySubjectOrderByMessageIdDesc(String subject) {
 
-        return messagetableentityRepository.findBySubjectOrderByMessageIdDesc(subject);
+        return messageTableEntityRepository.findBySubjectOrderByMessageIdDesc(subject);
     }
 
     @Override
     public void deleteAll() {
-        messagetableentityRepository.deleteAll();
+        messageTableEntityRepository.deleteAll();
     }
 
     @Override
     public void delete(String subject) {
-        messagetableentityRepository.deleteBySubjectEqualsIgnoreCase(subject);
+        messageTableEntityRepository.deleteBySubjectEqualsIgnoreCase(subject);
     }
 
     @Override
     public long count() {
-        return messagetableentityRepository.count();
+        return messageTableEntityRepository.count();
     }
 
     @Override
     public long count(String subject) {
-        return messagetableentityRepository.countBySubject(subject);
-    }
-
-    @Override
-    public List<Message> cutMessages(List<MessageTableEntity> all){
-        List<Message> messageList = new ArrayList<>();
-        for(MessageTableEntity mes : all){
-            messageList.add(new Message(mes.getMessageId(), mes.getCreatorId(), mes.getParentMessageId(), mes.getSubject(), mes.getMessageBody(), mes.getCreateDate(), mes.getIsRead()));
-        }
-        return messageList;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Message{
-        private Long messageId;
-        private Long creatorId;
-        private Long parentMessageId;
-        private String subject;
-        private String messageBody;
-        private Timestamp createDate;
-        private Short isRead;
+        return messageTableEntityRepository.countBySubject(subject);
     }
 
 }

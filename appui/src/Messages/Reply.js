@@ -16,7 +16,7 @@ class Reply extends Component{
         this.submitFunction = this.submitFunction.bind(this);
     }
     submitFunction(){
-        fetch('http://localhost:8080/messages/newReply', {
+        fetch('http://localhost:8080/messages/' + this.state.replyMessage.parentMessageId + "/replies", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -24,7 +24,10 @@ class Reply extends Component{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             },
             body: JSON.stringify(
-                this.state.replyMessage)
+                this.state.replyMessage.user,
+                this.state.replyMessage.recipientId,
+                this.state.replyMessage.subject,
+                this.state.replyMessage.message)
         })
     }
     handleChange(propertyName, event) {

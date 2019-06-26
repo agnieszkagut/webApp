@@ -66,13 +66,14 @@ class IssueComponent extends Component{
                         {this.state.showForm?
                             (<div>
                                 <button style={{border: "1px solid white"}} className={this.props.buttonStyle} onClick={()=>{
-                                    fetch('http://localhost:8080/issues/modifyIssue/' + this.props.issueId + '/' + this.props.user, {
+                                    fetch('http://localhost:8080/issues/' + this.props.issueId + '/replies', {
                                         method: 'POST',
                                         headers: {'Content-Type': 'application/json',
                                                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
                                             },
                                         body: JSON.stringify(
-                                            this.state.newInscription)
+                                            this.state.newInscription,
+                                            this.props.user)
                                     })
                                         this.setState({showForm:!this.state.showForm})
                                     }}>

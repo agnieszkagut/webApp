@@ -40,7 +40,7 @@ class ProjectLeaderComponent extends Component{
                     />
                 </Row>
                 <button className={this.props.buttonStyle} onClick={()=>{
-                    fetch('http://localhost:8080/messages/toLeader/' + this.props.projectLeader, {
+                    fetch('http://localhost:8080/projects/' + this.props.projectId + "/leader/message", {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',

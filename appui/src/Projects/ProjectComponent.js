@@ -46,7 +46,7 @@ class ProjectComponent extends Component{
 
     componentDidMount(): void {
         const URL = "http://localhost:8080"
-        fetch(URL + "/projects/projectLeader/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/leader",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -60,7 +60,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/countEmployees/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/employees/count",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -74,7 +74,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/countTasksDone/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/tasks/done/count",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -88,7 +88,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/countTasks/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/tasks/count",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -102,7 +102,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/countTasksDelayed/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/tasks/delayed/count",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -116,7 +116,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/unassignedFunds/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/sponsorship/unassigned",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -130,7 +130,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/employees/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/employees",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -144,7 +144,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/otherEmployees/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/employees/other",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -158,7 +158,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/tasks/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/tasks",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -172,7 +172,7 @@ class ProjectComponent extends Component{
             .catch((error) => {
                 console.error(error);
             });
-        fetch(URL + "/projects/projectSponsorship/" + this.props.projectId,{
+        fetch(URL + "/projects/" + this.props.projectId + "/sponsorship",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
@@ -234,7 +234,7 @@ class ProjectComponent extends Component{
                         />
                     </Row>
                     <Row>
-                        <ProjectLeaderComponent projectLeader={this.state.projectLeader}
+                        <ProjectLeaderComponent projectId={this.props.projectId}
                                                 creatorId={this.props.user}
                                                 buttonStyle={this.props.buttonStyle}
                                                 credentials={this.props.credentials}

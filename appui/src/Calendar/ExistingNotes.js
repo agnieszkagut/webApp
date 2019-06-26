@@ -16,7 +16,7 @@ class ExistingNotes extends Component {
     }
     componentDidMount(): void {
         console.log(this.props.date.day)
-        fetch(URL + "/calendar/entries/"  + this.props.date.day, {
+        fetch(URL + "/calendar/date//"  + this.props.date.day, {
             headers:{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }
@@ -47,7 +47,7 @@ class ExistingNotes extends Component {
         let dateMonthAsWord = moment(strDate).format('DD-MMM-YYYY');
         console.log(dateMonthAsWord)
         const URL = "http://localhost:8080"
-        fetch(URL + "/calendar/entries/" + dateMonthAsWord, {
+        fetch(URL + "/calendar/date//" + dateMonthAsWord, {
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }

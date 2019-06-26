@@ -9,7 +9,7 @@ class AddIssue extends  Component{
         this.state = {
             issue:{
                 user: 0,
-                project: this.props.t('prompts.project', { framework: "react-i18next" }),
+                projectId: this.props.t('prompts.project', { framework: "react-i18next" }),
                 title: this.props.t('prompts.title', { framework: "react-i18next" }),
                 inscription: this.props.t('prompts.inscription', { framework: "react-i18next" })
             },
@@ -22,7 +22,7 @@ class AddIssue extends  Component{
         const issue = this.state.issue
         issue.user = this.props.user
         this.setState({ issue: issue })
-        fetch(URL + "/projects/all",{
+        fetch(URL + "/projects",{
             headers:{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }
@@ -38,7 +38,7 @@ class AddIssue extends  Component{
     }
     myCallback = (dataFromChild) => {
         const issue = this.state.issue
-        issue.project = dataFromChild
+        issue.projectId = dataFromChild
         this.setState({ issue: issue })
     }
     render(){

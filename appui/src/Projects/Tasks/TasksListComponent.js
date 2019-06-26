@@ -11,7 +11,7 @@ class TasksListComponent extends Component{
         this.onCheck = this.onCheck.bind(this);
     }
     onCheck(task){
-        fetch('http://localhost:8080/projects/isDone/' + task.taskId, {
+        fetch('http://localhost:8080/projects/tasks/' + task.taskId + "/done", {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',

@@ -36,7 +36,7 @@ class EditTasksComponent extends Component{
         )
     }
     onSubmit(){
-                fetch('http://localhost:8080/projects/task/' + this.props.projectId, {
+                fetch('http://localhost:8080/projects/' + this.props.projectId + "/task", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

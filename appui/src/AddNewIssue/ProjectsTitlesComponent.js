@@ -17,7 +17,7 @@ class ProjectsTitlesComponent extends Component {
     render () {
         console.log(this.state.selectedProject)
         let optionItems = this.props.projects.map((project, index) =>
-            <option key={index} value={project.name}> {project.name}</option>
+            <option key={index} value={project.projectId}> {project.name}</option>
         )
         const firstOne = <option key='key' value=''> {this.props.t('prompts.project', { framework: "react-i18next" })}</option>
         optionItems.unshift(firstOne)

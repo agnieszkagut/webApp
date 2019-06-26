@@ -9,7 +9,7 @@ class ReportedIssues extends  Component{
     }
     componentDidMount() {
         const URL = "http://localhost:8080"
-        fetch(URL + "/issues/all", {
+        fetch(URL + "/issues", {
             headers: {
             'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})

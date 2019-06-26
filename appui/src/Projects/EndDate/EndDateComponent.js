@@ -27,7 +27,7 @@ class EndDateComponent extends Component{
                     onChange={this.handleChange}
                 />
                 <button className={this.props.buttonStyle} onClick={()=>{
-                    fetch('http://localhost:8080/projects/endDate/' + this.props.projectId, {
+                    fetch('http://localhost:8080/projects/' + this.props.projectId + "/endDate", {
                         method: 'PUT',
                         headers: {
                             'Accept': 'application/json',

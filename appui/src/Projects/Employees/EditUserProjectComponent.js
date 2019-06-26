@@ -29,7 +29,7 @@ class EditUserProjectComponent extends Component{
         this.setState({ change: change })
     }
     onSubmit(){
-        fetch('http://localhost:8080/projects/user', {
+        fetch('http://localhost:8080/users/' + this.state.change.username, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -37,7 +37,7 @@ class EditUserProjectComponent extends Component{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             },
             body: JSON.stringify(
-                this.state.change)
+                this.state.change.project)
         })
     }
     render(){

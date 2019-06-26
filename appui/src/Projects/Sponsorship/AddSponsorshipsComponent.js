@@ -28,7 +28,7 @@ class AddSponsorshipsComponent extends Component{
         this.setState({ newSponsorship: newSponsorship })
     }
     onSubmit(){
-        fetch('http://localhost:8080/projects/sponsorship', {
+        fetch('http://localhost:8080/projects/' + this.state.newSponsorship.projectId + "/sponsorship", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -36,7 +36,8 @@ class AddSponsorshipsComponent extends Component{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             },
             body: JSON.stringify(
-                this.state.newSponsorship)
+                this.state.newSponsorship.name,
+                this.state.newSponsorship.value)
         })
     }
     handleChange(event) {

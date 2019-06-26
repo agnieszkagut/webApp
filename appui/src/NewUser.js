@@ -170,7 +170,7 @@ class NewUser extends Component {
                                         this.state.userEntity.position == ""
                                     ) this.setState({errorNull: true})
                                     else {
-                                        fetch('http://localhost:8080/login', {
+                                        fetch('http://localhost:8080/users', {
                                             method: 'POST',
                                             headers: {
                                                 'Accept': 'application/json',

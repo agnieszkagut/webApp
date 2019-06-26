@@ -46,7 +46,7 @@ class App extends Component {
         this.setState({ credentials: credentials })
         this.setState({ isLogged: true })
         const URL = "http://localhost:8080"
-        fetch(URL + "/login/userInfo/" + username,
+        fetch(URL + "/users/userInfo/" + username,
             {
                 method: 'GET',
                 headers: {

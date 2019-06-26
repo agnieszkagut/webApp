@@ -10,7 +10,7 @@ class MainComponent extends  Component{
     }
     componentDidMount() {
         const URL = "http://localhost:8080"
-        fetch(URL + "/issues/lastThree",
+        fetch(URL + "/issues?limit=3",
             {
                 method: 'GET',
                 headers: {

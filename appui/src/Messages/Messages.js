@@ -17,14 +17,14 @@ class Messages extends  Component{
     }
     componentDidMount(){
         const URL = "http://localhost:8080"
-        fetch(URL + "/messages/byRecipient/" +  this.props.user,
+        fetch(URL + "/messages/user/" + this.props.user + "/received",
             {headers:{'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }})
             .then(res => res.json())
             .then(data => {
                 this.handleData1(data)
             })
-        fetch(URL + "/messages/byCreator/" + this.props.user,
+        fetch(URL + "/messages/user/" + this.props.user + "/created",
             {headers:{'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
                 }})
             .then(res => res.json())

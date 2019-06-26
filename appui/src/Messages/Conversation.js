@@ -9,7 +9,7 @@ class Conversation extends Component{
     }
     componentDidMount(){
         const URL = "http://localhost:8080"
-        fetch(URL + "/messages/conversation/" +  this.props.messageId,{
+        fetch(URL + "/messages/" +  this.props.messageId + "/replies",{
             headers:{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }

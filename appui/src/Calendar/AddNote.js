@@ -9,7 +9,7 @@ class AddNote extends Component {
         this.state = {
             note: {
                 selectedDate: 0,
-                project: this.props.t('prompts.project', { framework: "react-i18next" }),
+                projectId: this.props.t('prompts.project', { framework: "react-i18next" }),
                 inscription: this.props.t('prompts.note', {framework: "react-i18next"})
             }
         }
@@ -27,7 +27,7 @@ class AddNote extends Component {
     }
     myCallback = (dataFromChild) => {
         const note = this.state.note
-        note.project = dataFromChild
+        note.projectId = dataFromChild
         this.setState({ note: note })
     }
     render(){
@@ -41,7 +41,7 @@ class AddNote extends Component {
                 </Row>
                 <Row>
                     <button className={this.props.buttonStyle} onClick={()=>{
-                        fetch('http://localhost:8080/calendar/entry/' + this.state.project, {
+                        fetch('http://localhost:8080/calendar', {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',

@@ -31,7 +31,7 @@ class CalendarComponent extends Component {
     }
     componentDidMount() {
         const URL = "http://localhost:8080"
-        fetch(URL + "/calendar/all",{
+        fetch(URL + "/calendar",{
             headers:{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }
@@ -39,7 +39,7 @@ class CalendarComponent extends Component {
             .then(data => {
                 this.setState({ eventsDates: data })
             });
-        fetch(URL + "/projects/all",{
+        fetch(URL + "/projects",{
             headers:{
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }

@@ -35,7 +35,9 @@ class EmployeesComponent extends Component{
                 </div>
                 <div>
                     {this.state.showEdit
-                        ?<EditUserProjectComponent users={this.props.listOfOtherEmployees}
+                        ?<EditUserProjectComponent
+                            userId={this.props.user}
+                            users={this.props.listOfOtherEmployees}
                                                    project={this.props.name}
                                                    buttonStyle={this.props.buttonStyle}
                                                    credentials={this.props.credentials}

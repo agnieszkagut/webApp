@@ -20,7 +20,7 @@ class Projects extends  Component{
     }
     loadFromApi=()=>{
         const URL = "http://localhost:8080"
-        fetch(URL + "/projects/all",{
+        fetch(URL + "/projects",{
             headers: {
                 'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
             }
@@ -30,7 +30,7 @@ class Projects extends  Component{
             });
         if(this.props.credentials.userLevel===2){
             console.log(this.props.user)
-            fetch(URL + "/projects/byLeader/" + this.props.user,{
+            fetch(URL + "/projects/leader/" + this.props.user,{
                 headers: {
                     'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)
                 }

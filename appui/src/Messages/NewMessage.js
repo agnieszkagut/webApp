@@ -22,7 +22,7 @@ class NewMessage extends Component{
         const message = this.state.message
         message.creatorId = this.props.creatorId
         this.setState({ message: message })
-        fetch(URL + "/messages/listOfUsers",{
+        fetch(URL + "/users",{
             headers:{'Authorization': 'Basic ' + btoa(this.props.credentials.username + ":" + this.props.credentials.password)}
         })
             .then(res => res.json())
@@ -56,7 +56,7 @@ class NewMessage extends Component{
                     </Row>
                     <Row>
                         <button className={this.props.buttonStyle} onClick={()=>{
-                            fetch('http://localhost:8080/messages/newMessage', {
+                            fetch('http://localhost:8080/messages', {
                                 method: 'POST',
                                 headers: {
                                     'Accept': 'application/json',
